@@ -18,6 +18,7 @@ def won_white (board):
     for row in range(3):
         if ((board [row][1] == board[row][2]) and (board[row][0] == board[row][1])):
             won = True
+    # Check vertical wins
     for col in range(3):
         if ((board [0][col] == board[1][col]) and (board[1][col] == board[2][col])):
             won = True
