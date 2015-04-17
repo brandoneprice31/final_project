@@ -7,6 +7,7 @@ Created on Tue Apr 14 20:17:49 2015
 
 #Sample boards for testing:
 board1=[[1,2,3][4,5,6],[7,8,9]]
+board2=[['x',4,5],['o',2,2],['x',1,9]]
 
 board = [[0 for y in range(3)] for x in range(3)]
 #board[1][2] = 5
@@ -23,7 +24,7 @@ def won_white (board):
         if ((board [0][col] == board[1][col]) and (board[1][col] == board[2][col])):
             won = True
     print won
-    
+
 
 won_white (board)
             
