@@ -4,25 +4,18 @@ Graphical User Interface Module
 
 # Gui Interface Module
 from Tkinter import *
-import numpy as np
 
-b1 = [['x','_','_'],['_','o','_'],['_','_','x']]
 
-def draw (board):
-    
+"""
+    draw takes in a canvas object and board type,
+    and renders the board onto the given canvas using Tkinter GUI
     """
-    draw takes in a board type and renders the board using Tkinter GUI
-    """
+def draw (canvas,board):
     
-    root = Tk()
+    canvas.delete("all")    
     
-    root.title('Tic Tac Toe')
-    root.geometry('500x500')
-    
-    cw = 500
     ch = 500
-    c = Canvas(root, width=cw, height=ch)
-    c.pack()
+    cw = 500    
     
     xs_orig = PhotoImage(file='./ximg.gif')
     os_orig = PhotoImage(file='./oimg.gif')
@@ -30,18 +23,14 @@ def draw (board):
     os = os_orig.subsample(2,2)
     
     for i in range(1,3):
-        c.create_rectangle(i*cw/3-1,0,i*cw/3-1,ch, fill="black")
+        canvas.create_rectangle(i*cw/3-1,0,i*cw/3-1,ch, fill="black")
     
     for i in range(1,3):
-        c.create_rectangle(0,i*cw/3-1,cw,i*cw/3-1, fill="black")          
+        canvas.create_rectangle(0,i*cw/3-1,cw,i*cw/3-1, fill="black")          
     
     for i in range(3):
         for j in range(3):
             if (board[i][j] == 'x'):
-                c.create_image(cw*(j+1)/3-cw/6, ch*(i+1)/3-ch/6, image=xs)
+                canvas.create_image(cw*(j+1)/3-cw/6, ch*(i+1)/3-ch/6, image=xs)
             if (board[i][j] == 'o'):
-                c.create_image(cw*(j+1)/3-cw/6, ch*(i+1)/3-ch/6, image=os)       
-    
-    mainloop()
-
-draw(b1)
+                canvas.create_image(cw*(j+1)/3-cw/6, ch*(i+1)/3-ch/6, image=os)
