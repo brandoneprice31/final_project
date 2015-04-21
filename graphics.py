@@ -1,9 +1,18 @@
+"""
+Graphical User Interface Module
+"""
 
-# Gui Interface Module
 from Tkinter import *
 import numpy as np
 
+b1 = [['x','_','_'],['_','o','_'],['_','_','x']]
+
 def draw (board):
+    
+    """
+    draw takes in a board type and renders the board using Tkinter GUI
+    """
+    
     root = Tk()
     
     root.title('Tic Tac Toe')
@@ -34,5 +43,4 @@ def draw (board):
     
     mainloop()
 
-b1 = np.array([['x','x','x'],['_','_','o'],['_','_','x']])
 draw(b1)
