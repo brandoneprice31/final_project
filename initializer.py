@@ -8,7 +8,7 @@ Created on Fri Apr 17 13:38:26 2015
 ########## TYPES ##############
 # type player = X | O
 
-# type action = int (between 1 and 9 inclusive)
+# type action = (int,int)
 
 # type board = array of arrays
 
@@ -25,37 +25,39 @@ def new():
 
 #-----------------------------------------------------------------------------
 """
-next_state takes in a state and an action and returns the next state
+next_state takes in a board and an action and returns the next state
 """
-def next_state(state,action,player):
+def next_state(state,action):
     i = action[0]
     j = action[1]
-    state[i][j] = player
-    return state
+    state[0][i][j] = state[1]
+    return (state)
     
 
 #-----------------------------------------------------------------------------
 """
-eval checks if a player won, tied, or continues on a current states
+eval checks if a player won, tied, or continues on a current boards
 """
-def eval (state,pl):
+def eval (state):
+    board = state[0]
+    pl = state[1]
     # check all possible winning cases
     if (
-    state[0][0] == state[0][1] == state[0][2] == pl or #across the top
-    state[1][0] == state[1][1] == state[1][2] == pl or #across the middle
-    state[2][0] == state[2][1] == state[2][2] == pl or #across the bottom
-    state[0][0] == state[1][0] == state[2][0] == pl or #down the left
-    state[0][1] == state[1][1] == state[2][1] == pl or #down the middle
-    state[0][2] == state[1][2] == state[2][2] == pl or #down the right
-    state[0][0] == state[1][1] == state[2][2] == pl or #top left diagonal
-    state[2][0] == state[1][1] == state[0][2] == pl):  #bottom left diagonal
+    board[0][0] == board[0][1] == board[0][2] == pl or #across the top
+    board[1][0] == board[1][1] == board[1][2] == pl or #across the middle
+    board[2][0] == board[2][1] == board[2][2] == pl or #across the bottom
+    board[0][0] == board[1][0] == board[2][0] == pl or #down the left
+    board[0][1] == board[1][1] == board[2][1] == pl or #down the middle
+    board[0][2] == board[1][2] == board[2][2] == pl or #down the right
+    board[0][0] == board[1][1] == board[2][2] == pl or #top left diagonal
+    board[2][0] == board[1][1] == board[0][2] == pl):  #bottom left diagonal
         return 'win'
     
     else: 
         # check if there is '_' which corresponds to continue
         for i in range(3):
             for j in range(3):
-                if (state[i][j] == '_'):
+                if (board[i][j] == '_'):
                     return 'continue'
                     
         # return tie for cats game
@@ -75,12 +77,12 @@ def opponent (player):
 
 #-----------------------------------------------------------------------------
 """
-valid takes in a state and action and checks if it is a valid action
+valid takes in a board and action and checks if it is a valid action
 """
-def valid (state,action):
+def valid (board,action):
     i = action[0]
     j = action[1]
-    return (state[i][j] == '_')
+    return (board[i][j] == '_')
 
 #-----------------------------------------------------------------------------
 """
