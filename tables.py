@@ -1,29 +1,32 @@
-import initializer as init
+# import initializer as init
 
-# "type" isn't a thing in python
-type stateTable = dict() # dictionary with states as keys and actTables as values
+# stateTable and actTables are types
+# stateTable: dictionary with states as keys and actTables as values
+# actTable: dictionary with actions as keys and floats as values (Q values)
 
-type actTable = dict ()# dictionary with squares as keys and floats as values 
+# To instantiate a qTable or rewardTable (this will be done in main.py), 
+# do the following:
+# qTable = dict()		<-- values in actTable are qvalues
 
-qTable = dict() # qTable is mutable dict, initialize as dummy stateTable
-	# floats [keys in inner actTable] are q-values; we'll update this
-	# output a stateTable
+# rewardTable = dict()  <-- values in actTable are rewards
 
-rewardTable = () # rewardTable is mutable dict, how to initialize?
+rewardTable = dict() # rewardTable is mutable dict, how to initialize?
 	# floats [keys in inner actTable] are rewards [0, 1, or -1]; don't update this
 
-def value (board, square, qTable): 
-	# float (* looks up q-value for board and next move square*)
-    # lookup board in qTable, return the actTable
-    # lookup square in actTable, retun q-value
+# lookup value: stateKey -> action -> table -> value)
+# value can be a q-value or a reward
+def lookup_value (stateKey, action, stateTable):
+	actTable = stateTable.get(stateKey)
+	value = actTable.get(action)
+	return value
 
 def makeKey (state) : 
 	# take in state and create string representation
 	# this key is passed into a statetable, say q table
 
-
 def nextKey (state) : 
 	makeKey (nextState, opponent(player))
 
-def addKey (string) : 
+def addKey (key) : 
 	# add row to rewardTable & qTable with this key reward is 0 and q-value is 0 *)
+
