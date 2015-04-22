@@ -14,6 +14,8 @@ import modules
 
 from Tkinter import *
 import initializer as init
+#import learning as comp
+#import tables as T
 
 
 #-----------------------------------------------------------------------------
@@ -27,7 +29,7 @@ def start_game (game_type):
     initialize board, player, and Canvas
     """
     
-    player = init.first_player()
+    player = init.random_player()
     
     board = init.new()
     
@@ -112,24 +114,33 @@ def start_game (game_type):
                     else:
                         message = 'O Wins!'
                     C.create_text(500/2,500/2,text=message,font=('Purisa',32))
-                    C.bind("<Button-1>",new_game)
+                    C.bind("<Button-1>",new_human_game)
                     
-                # Cats game
+                # cats game
                 if (game_state == 'tie'):
                     C.create_rectangle(100,100,500-100,500-100, fill="white")
                     C.create_text(500/2,500/2,text='Tie Game!',font=('Purisa',
                                                                      32))
-                    C.bind("<Button-1>",new_game)
+                    C.bind("<Button-1>",new_human_game)
                 
                 # game continues
                 else:   
                     # switch player
                     player = init.opponent(player)
                     
+                    """
                     # if its a hum vs comp game_type
                     if (game_type == 'hvc'):
+                        # get the next move from the computer
+                        next_move = comp.chooseMove((board,player),
+                                               T.qtable(),T.rtable())
+                        #implement the next move
+                        board = init.next_state((board,player),next_move)[0]
+                        draw(board)
+                        # change player
+                        player = init.opponent(player)
+                    """
                         
-        
         C.bind("<Button-1>", move)
         C.pack()
         
@@ -138,27 +149,75 @@ def start_game (game_type):
         
     #--------------------------------------------------------------------------
     """
-    new_game handler function
+    new_human_game handler function
     """
     
-    # function that starts new_game            
-    def new_game(event):
+    # function that starts new game involving humans            
+    def new_human_game(event):
         C.delete('all')
         global board
         board = init.new()
         global player
-        player = init.first_player()
+        player = init.random_player()
         draw_lines()
         draw(board)
         add_move_listener()
-    
+        
     
     #--------------------------------------------------------------------------
     """
-    play a new the game
+    new_comp_only_game  function
     """
-    new_game('first')
+    """
+    # function that starts new game involving humans            
+    def new_comp_only_game(event):
+        C.delete('all')
+        global board
+        board = init.new()
+        global player
+        player = init.random_player()
+        draw_lines()
+        draw(board)
+        
+        while (init.eval((board,player))):
+            # get the next move from the computer
+            next_move = comp.chooseMove((board,player),
+                                   T.qtable(),T.rtable())
+            #implement the next move
+            board = init.next_state((board,player),next_move)[0]
+            draw(board)
+            # change player
+            player = init.opponent(player)
+        
+        game_state = init.eval((board,player))
+        
+        # somebody won
+        if (game_state == 'win'):
+            C.create_rectangle(100,100,500-100,500-100, fill="white")
+            if (player=='x'):
+                message = 'X Wins!'
+            else:
+                message = 'O Wins!'
+            C.create_text(500/2,500/2,text=message,font=('Purisa',32))
+            C.bind("<Button-1>",new_game)
+            
+        # cats game
+        if (game_state == 'tie'):
+            C.create_rectangle(100,100,500-100,500-100, fill="white")
+            C.create_text(500/2,500/2,text='Tie Game!',font=('Purisa',32))
+    """
+
+    #--------------------------------------------------------------------------
+    """
+    play a new game
+    """
     
+    if (game_type == 'hvh' or game_type == 'hvc'):
+        new_human_game('first')
+    """
+    else:
+        new_comp_only_game()
+    """
     
 #-----------------------------------------------------------------------------
 """

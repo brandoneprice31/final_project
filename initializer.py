@@ -6,6 +6,8 @@ Tic Tac Toe Program
 by Vincent Lan, Stephen Albro, Peter Hickman, & Brandon Price
 """
 
+from random import randint
+
 ########## TYPES ##############
 # type player = X | O
 
@@ -90,5 +92,8 @@ def valid (board,action):
 """
 first_player returns the automatic first player of every game
 """
-def first_player ():
-    return 'x'
+def random_player ():
+    if (randint(0,1) == 0):
+        return 'x'
+    else:
+        return 'o'
