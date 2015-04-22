@@ -1,23 +1,28 @@
 import initializer as I
-import matrices as M
+import tables as T
+import learning as L
 
 global maxGames
 MaximumGames = 30000
 
 ## PseudoCODE FROM ONLINE
-gameLearning(startBoard, maxGames)
-  board = startBoard
+def gameLearning(maxGames):
+
+  board = I.new()
+  player = I.random_player()
+  state = (board, player)
   games = 0
+  table = T.qTable
+  
   while (games < maxGames):
-#insert player here?
-    stateKey = makeKey(board, player)
-    if stateKey not in table
-       addKey(stateKey)
-    action = chooseAction(stateKey, table)
-    nextBoard = execute(action)
-    nextKey = makeKey(nextBoard, opponent(player))
-    reward = reinforcement(nextBoard)
-    if nextKey not in table
+    stateKey = T.makeKey(state)
+    if stateKey not in table.keys():
+       T.addKey(stateKey)
+    action = L.chooseAction(stateKey,table)
+    nextBoard = I.next_state(state,action)[1]
+    nextKey = T.makeKey(nextState, I.opponent(player))
+    reward = L.reinforcement(nextBoard)
+    if nextKey not in table.keys()
        addKey(nextKey)
     updateQvalues(stateKey, action, nextKey, reward)
     if game over

@@ -7,7 +7,9 @@ Created on Fri Apr 17 13:39:00 2015
 import Matrices as M
 import Initializer as I
 
-def chooseMove(stateKey, qTable): 
+def reinforcement(board)
+
+def chooseAction(stateKey, qTable): 
   actTable = value[stateKey]
   possible_actions = []
   List.filter (fun a -> I.valid) actions
