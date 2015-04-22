@@ -18,8 +18,18 @@ def value (board, square, qTable):
     # lookup square in actTable, retun q-value
 
 def makeKey (state) : 
+    string = ""
+    board = state[0]
+    pl = state[1]
+    for i in range(3):
+        for j in range(3):
+            string = string + state[0][i][j]
+    string = string + pl
+    return string
+        
 	# take in state and create string representation
 	# this key is passed into a statetable, say q table
+      # The first 9 characters will be the board, the last  characters will be the player
 
 
 def nextKey (state) : 

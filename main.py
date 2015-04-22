@@ -1,6 +1,54 @@
 import initializer as I
 import matrices as M
 
+global maxGames
+MaximumGames = 30000
+
+## PseudoCODE FROM ONLINE
+gameLearning(startBoard, maxGames)
+  board = startBoard
+  games = 0
+  while (games < maxGames):
+#insert player here?
+    stateKey = makeKey(board, player)
+    if stateKey not in table
+       addKey(stateKey)
+    action = chooseAction(stateKey, table)
+    nextBoard = execute(action)
+    nextKey = makeKey(nextBoard, opponent(player))
+    reward = reinforcement(nextBoard)
+    if nextKey not in table
+       addKey(nextKey)
+    updateQvalues(stateKey, action, nextKey, reward)
+    if game over
+       reset game
+       board = startBoard
+       games += 1
+    else
+       board = nextBoard
+       switchPlayers()
+
+
+
+gameLearning(I.new(), MaximumGames)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 # IGNORE THESE ARE STEPHen's musings
 
