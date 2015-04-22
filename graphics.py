@@ -3,7 +3,7 @@ CS 51
 
 Tic Tac Toe Program
 
-by Vincent Lan, Stephen Albro, Peter Hickman, & Brandon Price
+by Vincent Chow, Stephen Albro, Peter Hickman, & Brandon Price
 """
 
 
@@ -265,23 +265,24 @@ def cvc ():
 
 # create buttons
 humvhum = Button(master = W, text = 'Human vs. Human', command = hvh,
-                 pady = 10, font = ('Purisa', 32))
+                 pady = 0.02*h, font = ('Purisa', 32*sh/900))
 humvcomp = Button(master = W, text = 'Human vs. Computer', command = hvc, 
-                  pady = 10, font = ('Purisa', 32))
+                  pady = 0.02*h, font = ('Purisa', 32*sh/900))
 compvcomp = Button(master = W, text = 'Computer vs. Computer', command = cvc,
-                   pady = 10, font = ('Purisa', 32))
+                   pady = 0.02*h, font = ('Purisa', 32*sh/900))
 
 # create title and credits
-title = Label(master = W, text = 'Tic Tac Toe', font = ('Cambria', 64, 'bold'))
+title = Label(master = W, text = 'Tic Tac Toe', font = ('Cambria', 64*sh/900, 'bold'))
 credits = Label(master = W,
-                text = 'by Vincent Lan, Stephen Albro, Peter Hickman, & Brandon Price',
+                text = 'by Vincent Chow, Stephen Albro, \
+Peter Hickman, & Brandon Price',
                 font = ('Cambria', 12))
 
 # display buttons, title, and credits
-title.pack(pady=30)
-humvhum.pack(fill=X, pady=20)
-humvcomp.pack(fill=X, pady=20)
-compvcomp.pack(fill=X, pady=20)
-credits.pack(pady=10)
+title.pack(pady=0.06*h)
+humvhum.pack(fill=X, pady=0.04*h)
+humvcomp.pack(fill=X, pady=0.04*h)
+compvcomp.pack(fill=X, pady=0.04*h)
+credits.pack(pady=0.02*h)
 
 W.mainloop()
