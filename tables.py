@@ -25,6 +25,7 @@ def makeKey (state) :
         for j in range(3):
             string = string + state[0][i][j]
     string = string + pl
+    return string
         
 	# take in state and create string representation
 	# this key is passed into a statetable, say q table
