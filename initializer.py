@@ -1,8 +1,9 @@
-# -*- coding: utf-8 -*-
 """
-Created on Fri Apr 17 13:38:26 2015
+CS 51
 
-@author: Stephen
+Tic Tac Toe Program
+
+by Vincent Lan, Stephen Albro, Peter Hickman, & Brandon Price
 """
 
 ########## TYPES ##############
@@ -83,6 +84,7 @@ def valid (board,action):
     i = action[0]
     j = action[1]
     return (board[i][j] == '_')
+
 
 #-----------------------------------------------------------------------------
 """
