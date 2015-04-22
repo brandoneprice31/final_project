@@ -5,12 +5,12 @@ import learning as L
 global maxGames
 MaximumGames = 30000
 
-## PseudoCODE FROM ONLINE
+""" 
+Plays games to learn q values and returns qTable
+"""
 def gameLearning(maxGames):
 
-  board = I.new()
-  player = I.random_player()
-  state = (board, player)
+  state = I.new_game
   games = 0
   table = T.qTable
   
@@ -18,39 +18,25 @@ def gameLearning(maxGames):
     stateKey = T.makeKey(state)
     if stateKey not in table.keys():
        T.addKey(stateKey)
-    action = L.chooseAction(stateKey,table)
-    nextBoard = I.next_state(state,action)[1]
-    nextKey = T.makeKey(nextState, I.opponent(player))
-    reward = L.reinforcement(nextBoard)
-    if nextKey not in table.keys()
-       addKey(nextKey)
-    updateQvalues(stateKey, action, nextKey, reward)
-    if game over
-       reset game
-       board = startBoard
+    action = L.chooseMove(state,table)
+    nextState = I.next_state(state,action)
+    nextKey = T.makeKey(nextState)
+    reward = L.reinforcement(nextState[0])
+    if nextKey not in table.keys():
+       T.addKey(nextKey)
+    table = L.updateQvalues(stateKey, action, nextKey, reward, table)
+    if (I.eval(nextState) == 'win'):
+       state = I.new_game
        games += 1
-    else
-       board = nextBoard
-       switchPlayers()
-
-
-
-gameLearning(I.new(), MaximumGames)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    else:
+       state = nextState
+       
+  return table
+      
+"""
+Uses qTable to compete against a human player
+"""
+def compete(qtable):
 
 
 

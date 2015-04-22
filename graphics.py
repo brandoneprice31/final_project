@@ -3,7 +3,7 @@ CS 51
 
 Tic Tac Toe Program
 
-by Vincent Lan, Stephen Albro, Peter Hickman, & Brandon Price
+by Vincent Chow, Stephen Albro, Peter Hickman, & Brandon Price
 """
 
 

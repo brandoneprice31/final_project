@@ -3,7 +3,7 @@ CS 51
 
 Tic Tac Toe Program
 
-by Vincent Lan, Stephen Albro, Peter Hickman, & Brandon Price
+by Vincent Chow, Stephen Albro, Peter Hickman, & Brandon Price
 """
 
 from random import randint
@@ -97,3 +97,9 @@ def random_player ():
         return 'x'
     else:
         return 'o'
+        
+"""
+returns an empty board and a random player
+"""
+def new_game ():
+  return (new(),random_player())

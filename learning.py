@@ -4,12 +4,22 @@ Created on Fri Apr 17 13:39:00 2015
 @author: Peter
 """
 
+from random import randint
 import Matrices as M
 import Initializer as I
 
-def reinforcement(board)
+all_actions = [(0,0),(0,1),(0,2),(1,0),(1,1),(1,2),(2,0),(2,1),(2,2)]
 
-def chooseAction(stateKey, qTable): 
+def reinforcement(board):
+    return ""
+    
+def chooseMove(state, qTable):
+  possible_actions = [i for i in all_actions if I.valid(state[0],i) == True]
+  size = len(possible_actions)
+  return all_actions[randint(0,(size-1))]
+
+"""
+def chooseMove(stateKey, qTable): 
   actTable = value[stateKey]
   possible_actions = []
   List.filter (fun a -> I.valid) actions
@@ -26,14 +36,14 @@ def chooseAction(stateKey, qTable):
   
   We could also assign probabilities for actions using the formula on page 379
   of the Mitchell book
-   """
+"""
    
 gamma = 0.8 # discount factor 
 
 def updateQvalue (stateKey, action, nextKey, reward, qTable):
     """"
     udpates the qTable using the function Q*(s,a) <- r + gamma*min_(a’)Q*(s’,a’)
-    Returns the float that should replace the q-value in the qTable
+    Returns the new Q table
     
     Pseduocode:
     
