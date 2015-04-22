@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 Created on Fri Apr 17 13:39:00 2015
 
@@ -47,3 +46,10 @@ def updateQvalue (stateKey, action, nextKey, reward, qTable):
     min_qvalue = find minimum Q value among actions
     reward + gamma * min_qvalue
     """
+
+def reinforcement (board):
+    """"
+    if the state is a win for x, return 1, if win for o, return -1, otherwise
+    initialize to a random number on [-0.15,0.15]. at least this is
+    how i understand it now
+    """"
