@@ -21,23 +21,45 @@ def chooseMove(state, qTable):
   return possible_actions[randint(0,(size-1))]
 
 """
-def chooseMove(stateKey, qTable): 
-  actTable = value[stateKey]
+
+def chooseMove_random(state, qTable):
   possible_actions = []
-  List.filter (fun a -> I.valid) actions
-  values = list of values in actTable
-  if player is X
+  for i in all_actions:
+      if I.valid(state,all_actions[i]) == True:
+          possible_actions.append(all_actions[i])
+  size = len(possible_actions)
+  return all_actions[randint(0,(size-1))]
+
+def chooseMove(state, qTable): 
+  stateKey = T.makeKey(state)
+  actTable = qTable.get(stateKey, default=None)
+  possible_actions = [i for i in all_actions if (I.valid(state[0],i) == True)]
+  size = len(possible_actions)
+  values = actTable.values()
+  if (state[1] == 'x'):
+>>>>>>> 7448961435cb656b3ad91bf4ce3d26f3d1710c92
      lowest = min(values)
-  else
-     reverse the sign of each value in values list
+  else:
+     values = [i for i in values (-i)]
      lowest = min(values)
-  if lowest < 0
-     constant = abs(lowest) + 0.1
-     add this constant to each value in values list to make all values positive
-  now perform modified roulette wheel selection using k
+  if lowest < 0:
+     constant = abs(lowest) + 0.1     
+     # add this constant to each value in values list to make all values positive
+     # now perform modified roulette wheel selection using k
   
   We could also assign probabilities for actions using the formula on page 379
   of the Mitchell book
 """
    
 gamma = 0.8 # discount factor
+  # We could also assign probabilities for actions using the formula on page 379
+  # of the Mitchell book
+   
+# discount factor 
+gamma = 0.8 
+
+def updateQvalue (stateKey, action, nextKey, reward, qTable):
+    return ""
+
+def reinforcement (board):
+    return ""
