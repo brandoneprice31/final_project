@@ -14,10 +14,12 @@ def reinforcement(board):
     return ""
     
 def chooseMove_random(state, qTable):
-  possible_actions = [i for i in all_actions if I.valid(state[0],i) == True]
+  possible_actions = []
+  for i in all_actions:
+      if I.valid(state,all_actions[i]) == True:
+          possible_actions.append(all_actions[i])
   size = len(possible_actions)
   return all_actions[randint(0,(size-1))]
-
 
 def chooseMove(state, qTable): 
   stateKey = T.makeKey(state)
@@ -31,8 +33,7 @@ def chooseMove(state, qTable):
      values = [i for i in values (-i)]
      lowest = min(values)
   if lowest < 0:
-     constant = abs(lowest) + 0.1
-     
+     constant = abs(lowest) + 0.1     
      # add this constant to each value in values list to make all values positive
      # now perform modified roulette wheel selection using k
   
