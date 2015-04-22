@@ -4,21 +4,28 @@ Created on Fri Apr 17 13:39:00 2015
 @author: Peter
 """
 
-import Matrices as M
-import Initializer as I
+from random import randint
+import initializer as I
 
-def chooseMove (stateKey, qTable, rTable): 
-   """
-   takes an I.stateKey called "stateKey," an M.qTable called "qTable," and an
-   M.rewardTable called "rtable" and returns an I.action.
-   
-   One possible implementation could use the following pseduocode, making use
-   of modified roulette wheel selection using k:
-   
-  chooseMove(stateKey, qTable, rTable):
+all_actions = [(0,0),(0,1),(0,2),(1,0),(1,1),(1,2),(2,0),(2,1),(2,2)]
+
+def reinforcement(board):
+    return ""
+    
+def chooseMove(state, qTable):
+  possible_actions = []
+  for i in all_actions:
+      if (I.valid(state[0],i)):
+          possible_actions.append(i)
+  size = len(possible_actions)
+  return possible_actions[randint(0,(size-1))]
+
+"""
+def chooseMove(stateKey, qTable): 
   actTable = value[stateKey]
-  possible_actions = List.filter (fun a -> I.valid) actions
-  values = list of values in actionDict
+  possible_actions = []
+  List.filter (fun a -> I.valid) actions
+  values = list of values in actTable
   if player is X
      lowest = min(values)
   else
@@ -31,25 +38,6 @@ def chooseMove (stateKey, qTable, rTable):
   
   We could also assign probabilities for actions using the formula on page 379
   of the Mitchell book
-   """
+"""
    
-gamma = 0.8 # discount factor 
-
-def updateQvalue (stateKey, action, nextKey, reward, qTable):
-    """"
-    udpates the qTable using the function Q*(s,a) <- r + gamma*min_(a’)Q*(s’,a’)
-    Returns the float that should replace the q-value in the qTable
-    
-    Pseduocode:
-    
-    possible_actions = List.filter (fun a -> I.valid) (qTable[nextKey])
-    min_qvalue = find minimum Q value among actions
-    reward + gamma * min_qvalue
-    """
-
-def reinforcement (board):
-    """"
-    if the state is a win for x, return 1, if win for o, return -1, otherwise
-    initialize to a random number on [-0.15,0.15]. at least this is
-    how i understand it now
-    """"
+gamma = 0.8 # discount factor

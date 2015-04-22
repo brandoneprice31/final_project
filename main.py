@@ -1,51 +1,42 @@
 import initializer as I
-import matrices as M
+import tables as T
+import learning as L
 
 global maxGames
 MaximumGames = 30000
 
-## PseudoCODE FROM ONLINE
-gameLearning(startBoard, maxGames)
-  board = startBoard
+""" 
+Plays games to learn q values and returns qTable
+"""
+def gameLearning(maxGames):
+
+  state = I.new_game
   games = 0
+  table = T.qTable
+  
   while (games < maxGames):
-#insert player here?
-    stateKey = makeKey(board, player)
-    if stateKey not in table
-       addKey(stateKey)
-    action = chooseAction(stateKey, table)
-    nextBoard = execute(action)
-    nextKey = makeKey(nextBoard, opponent(player))
-    reward = reinforcement(nextBoard)
-    if nextKey not in table
-       addKey(nextKey)
-    updateQvalues(stateKey, action, nextKey, reward)
-    if game over
-       reset game
-       board = startBoard
+    stateKey = T.makeKey(state)
+    if stateKey not in table.keys():
+       T.addKey(stateKey)
+    action = L.chooseMove(state,table)
+    nextState = I.next_state(state,action)
+    nextKey = T.makeKey(nextState)
+    reward = L.reinforcement(nextState[0])
+    if nextKey not in table.keys():
+       T.addKey(nextKey)
+    table = L.updateQvalues(stateKey, action, nextKey, reward, table)
+    if (I.eval(nextState) == 'win'):
+       state = I.new_game
        games += 1
-    else
-       board = nextBoard
-       switchPlayers()
-
-
-
-gameLearning(I.new(), MaximumGames)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    else:
+       state = nextState
+       
+  return table
+      
+"""
+Uses qTable to compete against a human player
+"""
+def compete(qtable):
 
 
 
