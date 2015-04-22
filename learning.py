@@ -60,6 +60,3 @@ gamma = 0.8
 
 def updateQvalue (stateKey, action, nextKey, reward, qTable):
     return ""
-
-def reinforcement (board):
-    return ""

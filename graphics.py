@@ -16,6 +16,7 @@ from Tkinter import *
 import initializer as init
 import learning as comp
 #import tables as T
+from time import sleep
 
 
 #-----------------------------------------------------------------------------
@@ -24,19 +25,22 @@ def start_game function which plays a game given a game_type
 """
 
 def start_game (game_type):
+    
     #--------------------------------------------------------------------------
     """
-    initialize board, player, and Canvas
+    initialize Canvas
     """
-    
-    player = init.random_player()
-    
-    board = init.new()
     
     # draw canvas onto window
     cw = 500
     ch = 500
     C = Canvas(W, width=cw, height=ch)
+    
+    
+    #--------------------------------------------------------------------------
+    """
+    define draw_lines function which draws the lines onto the board
+    """
     
     # draw lines fuction
     def draw_lines ():
@@ -46,126 +50,133 @@ def start_game (game_type):
         for i in range(1,3):
             C.create_rectangle(0,i*cw/3-1,cw,i*cw/3-1, fill="black")   
     
-    draw_lines()
-    
     
     #--------------------------------------------------------------------------
     """
     define draw function which draws the current board
     """
     
-    # initialize x and o image
+    # initialize and resize x and o image
     xs_orig = PhotoImage(file='./ximg.gif')
     os_orig = PhotoImage(file='./oimg.gif')
     xs = xs_orig.subsample(2,2)
     os = os_orig.subsample(2,2)
     
-    def draw(b):
-        for i in range(3):
-            for j in range(3):
-                if (b[i][j] == 'x'):
-                    C.create_image(cw*(j+1)/3-cw/6, ch*(i+1)/3-ch/6, image=xs)
-                if (b[i][j] == 'o'):
-                    C.create_image(cw*(j+1)/3-cw/6, ch*(i+1)/3-ch/6, image=os)
+    def draw((i,j),player):
+        if (player == 'x'):
+            C.create_image(cw*(j+1)/3-cw/6, ch*(i+1)/3-ch/6, image=xs)
+        if (player == 'o'):
+            C.create_image(cw*(j+1)/3-cw/6, ch*(i+1)/3-ch/6, image=os)
+                    
+           
+   #--------------------------------------------------------------------------
+    """
+    define end game function which draws the end screen
+    """
+    
+    def end_game (game_type, end_type, player):
+        # draw white rectangle
+        C.create_rectangle(100,100,500-100,500-100, fill="white")
+        if (end_type == 'win'):
+            if (player=='x'):
+                message = 'X Wins!'
+            else:
+                message = 'O Wins!'
+        else:
+            message = 'Tie Game!'
+        C.create_text(500/2,500/2,text=message,font=('Purisa',32))
+        if (game_type == 'hvh'):
+            C.bind("<Button-1>",new_hvh_game)
+        elif (game_type == 'hvc'):
+            C.bind("<Button-1>",new_hvc_game)
+        elif (game_type == 'cvc'):
+            C.bind("<Button-1>",new_cvc_game)
     
            
     #--------------------------------------------------------------------------
     """
     def add_move_listener which adds a listener for a move event
     """
+    def human_move(event):
     
-    def add_move_listener ():
-        # define click_handler for handling click events
-        def move(event):
+        # pinpoint which section was clicked
+        if (0 <= event.y < ch/3):
+            i = 0
+        if (ch/3 <= event.y < ch*2/3):
+            i = 1
+        if (ch*2/3 <= event.y <= ch):
+            i = 2
+        if (0 <= event.x < cw/3):
+            j = 0
+        if (cw/3 <= event.x < cw*2/3):
+            j = 1
+        if (cw*2/3 <= event.x <= cw):
+            j = 2
         
-            # pinpoint which section was clicked
-            if (0 <= event.y < ch/3):
-                i = 0
-            if (ch/3 <= event.y < ch*2/3):
-                i = 1
-            if (ch*2/3 <= event.y <= ch):
-                i = 2
-            if (0 <= event.x < cw/3):
-                j = 0
-            if (cw/3 <= event.x < cw*2/3):
-                j = 1
-            if (cw*2/3 <= event.x <= cw):
-                j = 2
-            
-            # check if move is valid   
-            global board    
-            if(init.valid(board,(i,j))):
-            
-                # add new move to board
-                global player    
-                board = init.next_state((board,player),(i,j))[0]
-                
-                # draw new board
-                draw(board)    
-                
-                # check game states
-                game_state = init.eval((board,player))
-                
-                # somebody won
-                if (game_state == 'win'):
-                    C.create_rectangle(100,100,500-100,500-100, fill="white")
-                    if (player=='x'):
-                        message = 'X Wins!'
-                    else:
-                        message = 'O Wins!'
-                    C.create_text(500/2,500/2,text=message,font=('Purisa',32))
-                    C.bind("<Button-1>",new_human_game)
-                    
-                # cats game
-                elif (game_state == 'tie'):
-                    C.create_rectangle(100,100,500-100,500-100, fill="white")
-                    C.create_text(500/2,500/2,text='Tie Game!',font=('Purisa',
-                                                                     32))
-                    C.bind("<Button-1>",new_human_game)
-                
-                # game continues
-                else:   
-                    # switch player
-                    player = init.opponent(player)
-                    
-                    
-                    # if its a hum vs comp game_type
-                    if (game_type == 'hvc'):
-                        # pause the program
-                        
-                        # get the next move from the computer
-                        next_move = comp.chooseMove((board,player), "")
-                        #implement the next move
-                        board = init.next_state((board,player),next_move)[0]
-                        draw(board)
-                        
-                        # check game states
-                        game_state = init.eval((board,player))
-                        
-                        # somebody won
-                        if (game_state == 'win'):
-                            C.create_rectangle(100,100,500-100,500-100, fill="white")
-                            if (player=='x'):
-                                message = 'X Wins!'
-                            else:
-                                message = 'O Wins!'
-                            C.create_text(500/2,500/2,text=message,font=('Purisa',32))
-                            C.bind("<Button-1>",new_human_game)
-                            
-                        # cats game
-                        elif (game_state == 'tie'):
-                            C.create_rectangle(100,100,500-100,500-100, fill="white")
-                            C.create_text(500/2,500/2,text='Tie Game!',font=('Purisa',
-                                                                             32))
-                            C.bind("<Button-1>",new_human_game)
-                            
-                        else:
-                            # change player
-                            player = init.opponent(player)
-                        
-        C.bind("<Button-1>", move)
-        C.pack()
+        # check if move is valid   
+        global board    
+        if(init.valid(board,(i,j))):
         
+            # add new move to board
+            global player    
+            board = init.next_state((board,player),(i,j))[0]
+            
+            # draw new board
+            draw((i,j),player)
+            
+            # check game states
+            game_state = init.eval((board,player))
+            
+            # game over
+            if (game_state != 'continue'):
+                end_game(game_type,game_state,player)
+            
+            else:
+                player = init.opponent(player)
+                W.event_generate("<<foo>>")
+    
+    
+    #--------------------------------------------------------------------------
+    """
+    def add_move_listener which adds a listener for a move event
+    """
+    def comp_move(event):
+        
+        # get the next move from the computer
+        next_move = comp.chooseMove((board,player), "")
+        
+        #implement the next move
+        global board
+        global player
+        board = init.next_state((board,player),next_move)[0]
+        draw(next_move,player)
+        
+        # check game states
+        game_state = init.eval((board,player))
+        
+        if (game_state != 'continue'):
+            end_game(game_type,game_state,player)
+        
+        else:
+            player = init.opponent(player)
+
+
+    #--------------------------------------------------------------------------
+    """
+    new_hvh_game handler function
+    """
+    
+    # function that starts new game involving humans            
+    def new_hvh_game(event):
+        C.delete('all')
+        global board
+        board = init.new()
+        global player
+        player = init.random_player()
+        draw_lines()
+        
+        C.bind("<Button-1>", human_move)
+        C.pack()        
         W.mainloop()
         
         
@@ -175,71 +186,52 @@ def start_game (game_type):
     """
     
     # function that starts new game involving humans            
-    def new_human_game(event):
+    def new_hvc_game(event):
         C.delete('all')
         global board
         board = init.new()
         global player
         player = init.random_player()
         draw_lines()
-        draw(board)
-        add_move_listener()
         
-    
+        C.bind("<Button-1>", human_move)
+        W.bind("<<foo>>", comp_move)
+        C.pack()
+        W.mainloop()
+        
+        
     #--------------------------------------------------------------------------
     """
-    new_comp_only_game  function
+    new_cvc_game  function
     """
-    """
+    
     # function that starts new game involving humans            
-    def new_comp_only_game(event):
+    def new_cvc_game(event):
         C.delete('all')
         global board
         board = init.new()
         global player
         player = init.random_player()
         draw_lines()
-        draw(board)
         
-        while (init.eval((board,player))):
-            # get the next move from the computer
-            next_move = comp.chooseMove((board,player),
-                                   T.qtable(),T.rtable())
-            #implement the next move
-            board = init.next_state((board,player),next_move)[0]
-            draw(board)
-            # change player
-            player = init.opponent(player)
+        while (init.eval((board,player)) == 'continue'):
+            comp_move("automatic")
         
-        game_state = init.eval((board,player))
-        
-        # somebody won
-        if (game_state == 'win'):
-            C.create_rectangle(100,100,500-100,500-100, fill="white")
-            if (player=='x'):
-                message = 'X Wins!'
-            else:
-                message = 'O Wins!'
-            C.create_text(500/2,500/2,text=message,font=('Purisa',32))
-            C.bind("<Button-1>",new_game)
-            
-        # cats game
-        if (game_state == 'tie'):
-            C.create_rectangle(100,100,500-100,500-100, fill="white")
-            C.create_text(500/2,500/2,text='Tie Game!',font=('Purisa',32))
-    """
+        C.pack()
+        W.mainloop()
 
     #--------------------------------------------------------------------------
     """
     play a new game
     """
     
-    if (game_type == 'hvh' or game_type == 'hvc'):
-        new_human_game('first')
-    """
+    if (game_type == 'hvh'):
+        new_hvh_game('first')
+    elif (game_type == 'hvc'):
+        new_hvc_game('first')
     else:
-        new_comp_only_game()
-    """
+        new_cvc_game('first')
+    
     
 #-----------------------------------------------------------------------------
 """
@@ -294,7 +286,8 @@ compvcomp = Button(master = W, text = 'Computer vs. Computer', command = cvc,
                    pady = 0.02*h, font = ('Purisa', 32*sh/900))
 
 # create title and credits
-title = Label(master = W, text = 'Tic Tac Toe', font = ('Cambria', 64*sh/900, 'bold'))
+title = Label(master = W, text = 'Tic Tac Toe',
+              font = ('Cambria', 64*sh/900, 'bold'))
 credits = Label(master = W,
                 text = 'by Vincent Chow, Stephen Albro, \
 Peter Hickman, & Brandon Price',
