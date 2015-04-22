@@ -7,18 +7,11 @@ Created on Fri Apr 17 13:39:00 2015
 import Matrices as M
 import Initializer as I
 
-def chooseMove (stateKey, qTable, rTable): 
-   """
-   takes an I.stateKey called "stateKey," an M.qTable called "qTable," and an
-   M.rewardTable called "rtable" and returns an I.action.
-   
-   One possible implementation could use the following pseduocode, making use
-   of modified roulette wheel selection using k:
-   
-  chooseMove(stateKey, qTable, rTable):
+def chooseMove(stateKey, qTable): 
   actTable = value[stateKey]
-  possible_actions = List.filter (fun a -> I.valid) actions
-  values = list of values in actionDict
+  possible_actions = []
+  List.filter (fun a -> I.valid) actions
+  values = list of values in actTable
   if player is X
      lowest = min(values)
   else
