@@ -66,32 +66,15 @@ def start_game (game_type):
                 if (b[i][j] == 'o'):
                     C.create_image(cw*(j+1)/3-cw/6, ch*(i+1)/3-ch/6, image=os)
     
-    
-    #--------------------------------------------------------------------------
-    """
-    new_game handler function
-    """
-    
-    # function that starts new_game            
-    def new_game(event):
-        C.delete('all')
-        global board
-        board = init.new()
-        global player
-        player = init.first_player()
-        draw_lines()
-        draw(board)
-        play_game()
-    
            
     #--------------------------------------------------------------------------
     """
-    def Play Game Function
+    def add_move_listener which adds a listener for a move event
     """
     
-    def play_game ():
+    def add_move_listener ():
         # define click_handler for handling click events
-        def clicked(event):
+        def move(event):
         
             # pinpoint which section was clicked
             if (0 <= event.y < ch/3):
@@ -141,12 +124,33 @@ def start_game (game_type):
                 # game continues
                 else:   
                     # switch player
-                    player = init.opponent(player) 
+                    player = init.opponent(player)
+                    
+                    # if its a hum vs comp game_type
+                    if (game_type == 'hvc'):
+                        
         
-        C.bind("<Button-1>", clicked)
+        C.bind("<Button-1>", move)
         C.pack()
         
         W.mainloop()
+        
+        
+    #--------------------------------------------------------------------------
+    """
+    new_game handler function
+    """
+    
+    # function that starts new_game            
+    def new_game(event):
+        C.delete('all')
+        global board
+        board = init.new()
+        global player
+        player = init.first_player()
+        draw_lines()
+        draw(board)
+        add_move_listener()
     
     
     #--------------------------------------------------------------------------
@@ -190,7 +194,7 @@ def hvc ():
     compvcomp.pack_forget()
     title.pack_forget()
     credits.pack_forget()
-    start_game('hvh')
+    start_game('hvc')
     
 def cvc ():
     humvhum.pack_forget()
@@ -198,7 +202,7 @@ def cvc ():
     compvcomp.pack_forget()
     title.pack_forget()
     credits.pack_forget()
-    start_game('hvh')
+    start_game('cvc')
 
 # create buttons
 humvhum = Button(master = W, text = 'Human vs. Human', command = hvh,
@@ -208,11 +212,13 @@ humvcomp = Button(master = W, text = 'Human vs. Computer', command = hvc,
 compvcomp = Button(master = W, text = 'Computer vs. Computer', command = cvc,
                    pady = 10, font = ('Purisa', 32))
 
+# create title and credits
 title = Label(master = W, text = 'Tic Tac Toe', font = ('Cambria', 64, 'bold'))
 credits = Label(master = W,
                 text = 'by Vincent Lan, Stephen Albro, Peter Hickman, & Brandon Price',
                 font = ('Cambria', 12))
 
+# display buttons, title, and credits
 title.pack(pady=30)
 humvhum.pack(fill=X, pady=20)
 humvcomp.pack(fill=X, pady=20)
