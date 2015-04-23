@@ -40,19 +40,19 @@ finds lowest or highest q-value and returns the move and its q-value
 def extremeQvalue(key, player, qTable): 
     actTable = qTable[key]
     if player == 'x': 
-        max = -2 # dummy starter value
+        maximum = -2 # dummy starter value
         for key, value in actTable.iteritems():
-            if value > max:
-                max = value
+            if value > maximum:
+                maximum = value
                 best_action = key
-        return best_action, max  
+        return (best_action, maximum)  
     else:
-        min = 2 # dummy starter value
+        minimum = 2 # dummy starter value
         for key, value in actTable.iteritems():
-            if value < min:
-                min = value
+            if value < minimum:
+                minimum = value
                 best_action = key
-        return best_action, min
+        return (best_action, minimum)
 
 #-----------------------------------------------------------------------------
 """
@@ -91,7 +91,8 @@ def updateQvalue(stateKey, action, nextKey, reward, qTable):
   else:
      # expect opponent to choose next move to optimize against the current player
      player = stateKey[9] 
-     expected = reward + (discountFactor * extremeQvalue(nextKey, I.opponent(player), qTable))
+     opponent_best = extremeQvalue(nextKey, opponent, qTable)
+     expected = reward + (discountFactor * opponent_best[1])
   change = learningRate * (expected - qTable[stateKey][action])
   qTable[stateKey][action] += change
 

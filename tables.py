@@ -71,5 +71,6 @@ def addKey (key, table) :
     act_dict = {action:random.uniform(-0.15,.15) for action in actions}
     # Finally, add the key to the q table, its value being the entire act_dict.
     table[key] = act_dict
+    return table
          
     
