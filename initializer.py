@@ -97,9 +97,10 @@ def random_player ():
         return 'x'
     else:
         return 'o'
-        
+   
+#-----------------------------------------------------------------------------     
 """
 returns an empty board and a random player
 """
 def new_game ():
-  return (new(),random_player())
+  return (new(), random_player())

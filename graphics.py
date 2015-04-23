@@ -14,6 +14,7 @@ import modules
 
 from Tkinter import *
 import initializer as init
+import tables as tables
 import learning as comp
 #import tables as T
 from time import sleep
@@ -143,7 +144,11 @@ def start_game (game_type):
     def comp_move(event):
         
         # get the next move from the computer
-        next_move = comp.chooseMove((board,player), "")
+        # EDIT FROM PETER
+        stateKey = tables.makeKey((board,player))
+        if stateKey not in tables.qTable:
+            tables.addKey(stateKey,tables.qTable)
+        next_move = comp.chooseMove((board,player), tables.qTable)
         
         #implement the next move
         global board

@@ -1,10 +1,12 @@
 import initializer as init
 import random
 
+"""
 # "type" isn't a thing in python
 type stateTable = dict() # dictionary with states as keys and actTables as values
 
 type actTable = dict ()# dictionary with squares as keys and floats as values 
+"""
 
 qTable = dict() # qTable is mutable dict, initialize as dummy stateTable
 	# floats [keys in inner actTable] are q-values; we'll update this
@@ -14,6 +16,7 @@ rewardTable = () # rewardTable is mutable dict, how to initialize?
 	# floats [keys in inner actTable] are rewards [0, 1, or -1]; don't update this
 
 def value (board, square, qTable): 
+    ()
     # WE will probably come across this function when we implement choosemove
     # I'll wait until then to implement it.
     
@@ -22,9 +25,8 @@ def value (board, square, qTable):
     # lookup board in qTable, return the actTable
     # lookup square in actTable, retun q-value )))
 
-def makeKey (state) : 
+def makeKey(state): 
     string = ""
-    board = state[0]
     pl = state[1]
     for i in range(3):
         for j in range(3):
@@ -36,10 +38,14 @@ def makeKey (state) :
 	# this key is passed into a statetable, say q table
       # The first 9 characters will be the board, the last  characters will be the player
 
+"""
 def nextKey (state) : 
     makeKey (nextState, opponent(player))
     ## What's up with this function? Not sure we need it.
     ## In main.py, nextKey is a VARIABLE, not a function.
+    
+    # PETER: I agree, I don't think we need this
+"""
 
 # HELPER FUNCTION: Gets possible actions (ints) from KEYS (string representations of states)
 #   Iterate over the string, saving the index (number) of each '_' that appears.
@@ -48,11 +54,12 @@ def nextKey (state) :
 #   This list of indices is your set of actions.
 #   This function returns a LIST OF INTEGERS.
 def getActions(key):
+    all_actions = [(0,0),(0,1),(0,2),(1,0),(1,1),(1,2),(2,0),(2,1),(2,2)]
     action_list = []
     list_form = list(key)
     for i in range(len(list_form)):
         if (list_form[i] == '_'):
-            action_list.append(i)
+            action_list.append(all_actions[i])
     return action_list
         
         

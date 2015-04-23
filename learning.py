@@ -4,51 +4,53 @@ Created on Fri Apr 17 13:39:00 2015
 @author: Peter
 """
 
-from random import randint
+import random as R
 import initializer as I
+import tables as T
 
 all_actions = [(0,0),(0,1),(0,2),(1,0),(1,1),(1,2),(2,0),(2,1),(2,2)]
 
 def reinforcement(board):
     return ""
-    
-def chooseMove(state, qTable):
-  possible_actions = []
-  for i in all_actions:
-      if (I.valid(state[0],i)):
-          possible_actions.append(i)
-  size = len(possible_actions)
-  return possible_actions[randint(0,(size-1))]
-
+ 
+#-----------------------------------------------------------------------------
 """
+chooses a move from a given state.
+the current algorithm moves randomly half the time and exploit the best q value
+the other half
 
-def chooseMove_random(state, qTable):
-  possible_actions = []
-  for i in all_actions:
-      if I.valid(state,all_actions[i]) == True:
-          possible_actions.append(all_actions[i])
-  size = len(possible_actions)
-  return all_actions[randint(0,(size-1))]
+More complicated version to try:
+1) Modified Roulette Wheel Selection
+2) Code from Mitchell (379)
 
-def chooseMove(state, qTable): 
-  stateKey = T.makeKey(state)
-  actTable = qTable.get(stateKey, default=None)
-  possible_actions = [i for i in all_actions if (I.valid(state[0],i) == True)]
-  size = len(possible_actions)
-  values = actTable.values()
-  if (state[1] == 'x'):
->>>>>>> 7448961435cb656b3ad91bf4ce3d26f3d1710c92
-     lowest = min(values)
-  else:
-     values = [i for i in values (-i)]
-     lowest = min(values)
-  if lowest < 0:
-     constant = abs(lowest) + 0.1     
-     # add this constant to each value in values list to make all values positive
-     # now perform modified roulette wheel selection using k
-  
-  We could also assign probabilities for actions using the formula on page 379
-  of the Mitchell book
+"""   
+def chooseMove(state, qTable):
+    rand = R.random()
+    stateKey = T.makeKey(state)   
+    actions = T.getActions(stateKey)
+    if rand < 0.5:
+        
+        # random action
+        size = len(actions)
+        return actions[R.randint(0,(size-1))]
+        
+    else:
+        # exploit best q-value
+        act_dict = qTable[stateKey]
+        
+        # for player O, reverse sign of q-values in act_dict
+        if (state[1] == 'o'):
+            for key, value in act_dict.iteritems():
+                act_dict[key] = (-1) * value 
+                
+        # find best move        
+        max = -2. # dummy starter value
+        for key, value in act_dict.iteritems():
+            if value > max:
+                best_move = key
+        return best_move
+              
+
 """
    
 gamma = 0.8 # discount factor
