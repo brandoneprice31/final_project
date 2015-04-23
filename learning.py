@@ -9,9 +9,23 @@ import initializer as I
 
 all_actions = [(0,0),(0,1),(0,2),(1,0),(1,1),(1,2),(2,0),(2,1),(2,2)]
 
-def reinforcement(board):
-    return ""
-    
+def reinforcement(state):
+    if (state[1] == 'x'):
+        if (I.eval(state) == 'win'):
+            return 1
+        elif (I.eval((state[0], 'o')) == 'win'):
+            return -1
+        else:
+            return 0
+    if (state[1] == 'o'):
+        if (I.eval(state) == 'win'):
+            return -1
+        elif (I.eval((state[0],'x')) == 'win'):
+            return 1
+        else:
+            return 0
+
+
 def chooseMove(state, qTable):
   possible_actions = []
   for i in all_actions:
