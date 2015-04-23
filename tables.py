@@ -1,4 +1,5 @@
 import initializer as init
+import random
 
 # "type" isn't a thing in python
 type stateTable = dict() # dictionary with states as keys and actTables as values
@@ -53,12 +54,13 @@ def getActions(key):
         
         
 
-def addKey (string) : 
-    # add row to rewardTable & qTable with this key reward is 0 and q-value is 0 *)
-    # add the key to qTable
-    # get all the possible actions from the key
-    # set the value of the qtable at this key to ANOTHER DICTIONARY, the action dictionary,
-    # whose keys are each these actions (actions represented as integers)
-    # initialize the values associated with these action keys in the action dict to be
-    # random on [-0.15,0.15]
+def addKey (key, table) : 
+    # Adds the key to qTable, with its value being a dictionary of actions:Qvals
+    # Get list of potential actions from the key. This is an int list.
+    actions = getActions(key)
+    # Store these action as keys in act_dict, values intially randomized on [-0.15,0.15].
+    act_dict = {action:random.uniform(-0.15,.15) for action in actions}
+    # Finally, add the key to the q table, its value being the entire act_dict.
+    table[key] = act_dict
+         
     

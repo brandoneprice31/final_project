@@ -17,13 +17,13 @@ def gameLearning(maxGames):
   while (games < maxGames):
     stateKey = T.makeKey(state)
     if stateKey not in table.keys(): # I think this is actually correct syntax.
-       T.addKey(stateKey)
+       T.addKey(stateKey,table)
     action = L.chooseMove(state,table)
     nextState = I.next_state(state,action)
     nextKey = T.makeKey(nextState)
     reward = L.reinforcement(nextState[0])
     if nextKey not in table.keys():
-       T.addKey(nextKey)
+       T.addKey(nextKey,table)
     table = L.updateQvalues(stateKey, action, nextKey, reward, table)
     if (I.eval(nextState) == 'win'):
        state = I.new_game
