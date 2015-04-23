@@ -33,7 +33,32 @@ def makeKey (state) :
 
 
 def nextKey (state) : 
-	makeKey (nextState, opponent(player))
+    makeKey (nextState, opponent(player))
+    ## What's up with this function? Not sure we need it.
+    ## In main.py, nextKey is a VARIABLE, not a function.
+
+# HELPER FUNCTION: Gets possible actions (ints) from KEYS (string representations of states)
+def getActions(key):
+    # Iterate over the string, saving the index (number) of each '_' that appears.
+    # (Note that we should never get the number 9 as an action, because actions only range
+    # 0-8; the ninth charactr in a key always refers to the PLAYER and thus should never be '_'.)
+    # thislist is your set of actions.
+    # This function should return a LIST OF INTEGERS
+    action_list = []
+    list_form = list(key)
+    for i in range(len(list_form)):
+        if (list_form[i] == '_'):
+            action_list.append(i)
+    return action_list
+        
+        
 
 def addKey (string) : 
-	# add row to rewardTable & qTable with this key reward is 0 and q-value is 0 *)
+    # add row to rewardTable & qTable with this key reward is 0 and q-value is 0 *)
+    # add the key to qTable
+    # get all the possible actions from the key
+    # set the value of the qtable at this key to ANOTHER DICTIONARY, the action dictionary,
+    # whose keys are each these actions (actions represented as integers)
+    # initialize the values associated with these action keys in the action dict to be
+    # random on [-0.15,0.15]
+    

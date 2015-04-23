@@ -16,7 +16,7 @@ def gameLearning(maxGames):
   
   while (games < maxGames):
     stateKey = T.makeKey(state)
-    if stateKey not in table.keys():
+    if stateKey not in table.keys(): # I think this is actually correct syntax.
        T.addKey(stateKey)
     action = L.chooseMove(state,table)
     nextState = I.next_state(state,action)
