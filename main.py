@@ -21,7 +21,7 @@ def gameLearning(maxGames):
     action = L.chooseMove(state,table)
     nextState = I.next_state(state,action)
     nextKey = T.makeKey(nextState)
-    reward = L.reinforcement(nextState[0])
+    reward = L.reinforcement(nextState)
     if nextKey not in table.keys():
        T.addKey(nextKey,table)
     table = L.updateQvalues(stateKey, action, nextKey, reward, table)
