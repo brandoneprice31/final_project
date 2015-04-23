@@ -8,7 +8,7 @@ type stateTable = dict() # dictionary with states as keys and actTables as value
 type actTable = dict ()# dictionary with squares as keys and floats as values 
 """
 
-qTable = dict() # qTable is mutable dict, initialize as dummy stateTable
+qTable = {} # qTable is mutable dict, initialize as dummy stateTable
 	# floats [keys in inner actTable] are q-values; we'll update this
 	# output a stateTable
 

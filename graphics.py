@@ -190,7 +190,7 @@ def start_game (game_type):
     new_human_game handler function
     """
     
-    # function that starts new game involving humans            
+    # function that starts new game involving human and computer          
     def new_hvc_game(event):
         C.delete('all')
         global board
@@ -210,7 +210,7 @@ def start_game (game_type):
     new_cvc_game  function
     """
     
-    # function that starts new game involving humans            
+    # function that starts new game involving computers          
     def new_cvc_game(event):
         C.delete('all')
         global board

@@ -8,7 +8,8 @@ import random as R
 import initializer as I
 import tables as T
 
-gamma = 0.8 # discount factor
+discountFactor = 0.8
+learningRate = 0.5
  
 #-----------------------------------------------------------------------------
 """
@@ -30,6 +31,28 @@ def reinforcement(state):
             return 1
         else:
             return 0
+
+#-----------------------------------------------------------------------------
+"""
+finds lowest or highest q-value and returns the move and its q-value
+"""
+
+def extremeQvalue(key, player, qTable): 
+    actTable = qTable[key]
+    if player == 'x': 
+        max = -2 # dummy starter value
+        for key, value in actTable.iteritems():
+            if value > max:
+                max = value
+                best_action = key
+        return best_action, max  
+    else:
+        min = 2 # dummy starter value
+        for key, value in actTable.iteritems():
+            if value < min:
+                min = value
+                best_action = key
+        return best_action, min
 
 #-----------------------------------------------------------------------------
 """
@@ -55,23 +78,22 @@ def chooseMove(state, qTable):
         
     else:
         # exploit best q-value
-        act_dict = qTable[stateKey]
-        
-        # for player O, reverse sign of q-values in act_dict
-        if (state[1] == 'o'):
-            for key, value in act_dict.iteritems():
-                act_dict[key] = (-1) * value 
-                
-        # find best move        
-        max = -2. # dummy starter value
-        for key, value in act_dict.iteritems():
-            if value > max:
-                best_move = key
-        return best_move
+        return extremeQvalue(stateKey, state[1], qTable)[0]
 
 #-----------------------------------------------------------------------------
 """
 updates q-values in table
 """
-def updateQvalue (stateKey, action, nextKey, reward, qTable):
-    return ""
+
+def updateQvalue(stateKey, action, nextKey, reward, qTable):
+  if (I.eval == 'win' or I.eval == 'tie'):
+     expected = reward
+  else:
+     # expect opponent to choose next move to optimize against the current player
+     player = stateKey[9] 
+     expected = reward + (discountFactor * extremeQvalue(nextKey, I.opponent(player), qTable))
+  change = learningRate * (expected - qTable[stateKey][action])
+  qTable[stateKey][action] += change
+
+
+  
