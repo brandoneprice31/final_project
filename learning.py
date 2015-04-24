@@ -15,22 +15,14 @@ learningRate = 0.5
 """
 evaluates a board, returning 1 if X won and (-1) if O won, 0 otherwise.
 """
-
+            
 def reinforcement(state):
-    if (state[1] == 'x'):
-        if (I.eval(state) == 'win'):
+    if I.eval(state) == 'x_win':
             return 1
-        elif (I.eval((state[0], 'o')) == 'win'):
+    elif I.eval(state) == 'o_win':
             return -1
-        else:
-            return 0
-    if (state[1] == 'o'):
-        if (I.eval(state) == 'win'):
-            return -1
-        elif (I.eval((state[0],'x')) == 'win'):
-            return 1
-        else:
-            return 0
+    else:
+        return 0
 
 #-----------------------------------------------------------------------------
 """
@@ -85,17 +77,37 @@ def chooseMove(state, qTable):
 updates q-values in table
 """
 
-def updateQvalue(stateKey, action, nextKey, reward, qTable):
-  if (I.eval == 'win' or I.eval == 'tie'):
-     expected = reward
-  else:
-     # expect opponent to choose next move to optimize against the current player
-     player = stateKey[9] 
-     opponent = I.opponent(player)
-     opponent_best = extremeQvalue(nextKey, opponent, qTable)
-     expected = reward + (discountFactor * opponent_best[1])
-  change = learningRate * (expected - qTable[stateKey][action])
-  qTable[stateKey][action] += change
+
+#def updateQvalue(stateKey, action, nextKey, reward, qTable):
+#  if (I.eval == 'win' or I.eval == 'tie'):
+#     expected = reward
+#  else:
+#     # expect opponent to choose next move to optimize against the current player
+#     player = stateKey[9] 
+#     opponent = I.opponent(player)
+#     opponent_best = extremeQvalue(nextKey, opponent, qTable)
+#     expected = reward + (discountFactor * opponent_best[1])
+#  change = learningRate * (expected - qTable[stateKey][action])
+#  qTable[stateKey][action] += change
 
 
-  
+def updateQvalue(firstState, action, nextState, reward, qTable):
+    if (I.eval(nextState) == 'continue'):
+        
+        # expect opponent to choose next move to optimize against the current player
+        stateKey = T.makeKey(firstState)
+        nextKey = T.makeKEy(nextState)
+        player = stateKey[9]    
+        opponent = I.opponent(player)
+        print stateKey
+        opponent_best = extremeQvalue(nextKey, opponent, qTable)
+        expected = reward + (discountFactor * opponent_best[1])
+        change = learningRate * (expected - qTable[stateKey][action])
+        qTable[stateKey][action] += change
+        return qTable
+        
+    else:
+        print "else"
+        # game over, so expected is just the final reward
+        expected = reward
+
