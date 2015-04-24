@@ -24,26 +24,13 @@ qTable = {} # qTable is mutable dict, initialize as dummy stateTable
 	# floats [keys in inner actTable] are q-values; we'll update this
 	# output a stateTable
 
-rewardTable = dict() # rewardTable is mutable dict, how to initialize?
-	# floats [keys in inner actTable] are rewards [0, 1, or -1]; don't update this
-
 
 # lookup value: stateKey -> action -> table -> value)
 # value can be a q-value or a reward
 def lookup_value (stateKey, action, stateTable):
-	actTable = stateTable.get(stateKey)
-	value = actTable.get(action)
-	return value
+    actTable = stateTable[stateKey] 
+    return actTable[action]
 
-def value (board, square, qTable): 
-    ()
-    # WE will probably come across this function when we implement choosemove
-    # I'll wait until then to implement it.
-    
-    
-    # ((( float (* looks up q-value for board and next move square*)
-    # lookup board in qTable, return the actTable
-    # lookup square in actTable, retun q-value )))
 
 def makeKey(state): 
     string = ""
@@ -68,10 +55,6 @@ def nextKey (state) :
     
     # PETER: I agree, I don't think we need this
 """
-
-
-def addKey (key) : 
-	# add row to rewardTable & qTable with this key reward is 0 and q-value is 0 *)
 
 # HELPER FUNCTION: Gets possible actions (ints) from KEYS (string representations of states)
 #   Iterate over the string, saving the index (number) of each '_' that appears.
