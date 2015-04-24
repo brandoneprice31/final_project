@@ -12,7 +12,6 @@ Plays games to learn q values and returns qTable
 
 def gameLearning(maxGames):
     state = I.new_game()
-    print state
     games = 0
     table = T.qTable
   
@@ -30,8 +29,8 @@ def gameLearning(maxGames):
         reward = L.reinforcement(nextState)
         if nextKey not in table.keys():
             table = T.addKey(nextKey,table)
+        table = L.updateQvalue(state, action, nextState, reward, table)
         if (I.eval(nextState) == 'continue'):
-            table = L.updateQvalue(state, action, nextState, reward, table)
             state = nextState
         else:
             print nextState[0][0]
@@ -45,7 +44,7 @@ def gameLearning(maxGames):
     tableupdatedvals = []
     for state,actTable in table.iteritems():
         for action,qValue in actTable.iteritems():
-            if (qValue < 0.15 or qValue > -0.15):
+            if (qValue > 0.15):
                 tableupdatedvals.append((state, action, qValue))
     # print tableupdatedvals
     # print table
