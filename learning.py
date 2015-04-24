@@ -9,8 +9,8 @@ import initializer as I
 import tables as T
 
 discountFactor = 0.8
-learningRate = 0.5
-chooseRandomMove = 0.2
+learningRate = 0.8
+chooseRandomMove = 0.5
  
 #-----------------------------------------------------------------------------
 """
@@ -59,16 +59,24 @@ More complicated version to try:
 
 """ 
   
-def chooseMove(state, qTable):
-    rand = R.random()
+def chooseMove(state, qTable, games, maxGames):
     stateKey = T.makeKey(state)   
-    actions = T.getActions(stateKey)
-    if rand < chooseRandomMove:
-        
-        # random action
-        size = len(actions)
-        return actions[R.randint(0,(size-1))]
-        
+    
+    # exploring phase
+    if (games < (maxGames * (3/4))):
+        rand = R.random()
+        actions = T.getActions(stateKey)
+        if rand < chooseRandomMove:
+            
+            # random action
+            size = len(actions)
+            return actions[R.randint(0,(size-1))]
+            
+        else:
+            # exploit best q-value
+            return extremeQvalue(stateKey, state[1], qTable)[0]
+            
+    # exploitive phase
     else:
         # exploit best q-value
         return extremeQvalue(stateKey, state[1], qTable)[0]
@@ -93,10 +101,10 @@ updates q-values in table
 
 
 def updateQvalue(firstState, action, nextState, reward, qTable):
-    if (I.eval(nextState) == 'continue'):
-        
-        # expect opponent to choose next move to optimize against the current player
-        stateKey = T.makeKey(firstState)
+    stateKey = T.makeKey(firstState)
+    
+    # expect opponent to choose next move to optimize against the current player
+    if (I.eval(nextState) == 'continue'): 
         nextKey = T.makeKey(nextState)
         player = stateKey[9]    
         opponent = I.opponent(player)
@@ -106,7 +114,15 @@ def updateQvalue(firstState, action, nextState, reward, qTable):
         qTable[stateKey][action] += change
         return qTable
         
+    # game over, so expected is just the final reward
     else:
-        # game over, so expected is just the final reward
+        print "GAME OVER:"
+        print nextState
+        print reward
         expected = reward
+        change = learningRate * (expected - qTable[stateKey][action])
+        qTable[stateKey][action] += change
+        return qTable
+        
+        
 
