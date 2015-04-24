@@ -39,4 +39,3 @@ def nextKey (state) :
 
 def addKey (key) : 
 	# add row to rewardTable & qTable with this key reward is 0 and q-value is 0 *)
-
