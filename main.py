@@ -47,9 +47,9 @@ def gameLearning(maxGames):
         for action,qValue in actTable.iteritems():
             if (qValue < 0.15 or qValue > -0.15):
                 tableupdatedvals.append((state, action, qValue))
-    print tableupdatedvals
+    # print tableupdatedvals
     # print table
     return table
     
-gameLearning(100)
+gameLearning(100000)
   
