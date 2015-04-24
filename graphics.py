@@ -78,11 +78,10 @@ def start_game (game_type):
     def end_game (game_type, end_type, player):
         # draw white rectangle
         C.create_rectangle(100,100,500-100,500-100, fill="white")
-        if (end_type == 'win'):
-            if (player=='x'):
-                message = 'X Wins!'
-            else:
-                message = 'O Wins!'
+        if (end_type == 'x_win'):
+            message = 'X Wins!'
+        elif (end_type == 'o_win'):
+            message = 'O Wins!'
         else:
             message = 'Tie Game!'
         C.create_text(500/2,500/2,text=message,font=('Purisa',32))

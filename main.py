@@ -16,6 +16,10 @@ def gameLearning(maxGames):
     table = T.qTable
   
     while (games < maxGames):
+        print state[0][0]
+        print state[0][1]
+        print state[0][2]
+        print "----------"
         stateKey = T.makeKey(state)
         if stateKey not in table.keys():
             table = T.addKey(stateKey,table)
@@ -25,12 +29,20 @@ def gameLearning(maxGames):
         reward = L.reinforcement(nextState)
         if nextKey not in table.keys():
             table = T.addKey(nextKey,table)
-        table = L.updateQvalue(stateKey, action, nextKey, reward, table)
-        if (I.eval(nextState) == 'win'):
-            state = I.new_game
-            games += 1
-        else:
+        if (I.eval(nextState) == 'continue'):
             state = nextState
+            table = L.updateQvalue(stateKey, action, nextKey, reward, table)
+            keys = table.keys() # TEST
+        else:
+            print state[0][0]
+            print state[0][1]
+            print state[0][2]
+            print "----------"
+            print "NEW GAME:"
+            state = I.new_game()
+            games += 1
        
     return table
+    
+gameLearning(1000)
   

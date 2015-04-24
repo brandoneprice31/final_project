@@ -27,7 +27,10 @@ def value (board, square, qTable):
 
 def makeKey(state): 
     string = ""
+    
+    # lines below added for testing
     pl = state[1]
+    
     for i in range(3):
         for j in range(3):
             string = string + state[0][i][j]
