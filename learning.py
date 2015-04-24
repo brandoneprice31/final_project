@@ -10,7 +10,7 @@ import tables as T
 
 discountFactor = 0.8
 learningRate = 0.5
-chooseRandomMove = 0.2
+chooseRandomMove = 0.5
  
 #-----------------------------------------------------------------------------
 """
@@ -59,16 +59,24 @@ More complicated version to try:
 
 """ 
   
-def chooseMove(state, qTable):
-    rand = R.random()
+def chooseMove(state, qTable, games, maxGames):
     stateKey = T.makeKey(state)   
-    actions = T.getActions(stateKey)
-    if rand < chooseRandomMove:
-        
-        # random action
-        size = len(actions)
-        return actions[R.randint(0,(size-1))]
-        
+    
+    # exploring phase
+    if (games < (maxGames * (3/4))):
+        rand = R.random()
+        actions = T.getActions(stateKey)
+        if rand < chooseRandomMove:
+            
+            # random action
+            size = len(actions)
+            return actions[R.randint(0,(size-1))]
+            
+        else:
+            # exploit best q-value
+            return extremeQvalue(stateKey, state[1], qTable)[0]
+            
+    # exploitive phase
     else:
         # exploit best q-value
         return extremeQvalue(stateKey, state[1], qTable)[0]
