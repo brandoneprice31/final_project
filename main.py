@@ -27,7 +27,7 @@ def gameLearning(maxGames):
             table = T.addKey(nextKey,table)
         table = L.updateQvalue(stateKey, action, nextKey, reward, table)
         if (I.eval(nextState) == 'win'):
-            state = I.new_game
+            state = I.new_game()
             games += 1
         else:
             state = nextState
