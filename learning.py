@@ -4,52 +4,97 @@ Created on Fri Apr 17 13:39:00 2015
 @author: Peter
 """
 
-import Matrices as M
-import Initializer as I
+import random as R
+import initializer as I
+import tables as T
 
-def chooseMove (stateKey, qTable, rTable): 
-   """
-   takes an I.stateKey called "stateKey," an M.qTable called "qTable," and an
-   M.rewardTable called "rtable" and returns an I.action.
-   
-   One possible implementation could use the following pseduocode, making use
-   of modified roulette wheel selection using k:
-   
-  chooseMove(stateKey, qTable, rTable):
-  actTable = value[stateKey]
-  possible_actions = List.filter (fun a -> I.valid) actions
-  values = list of values in actionDict
-  if player is X
-     lowest = min(values)
-  else
-     reverse the sign of each value in values list
-     lowest = min(values)
-  if lowest < 0
-     constant = abs(lowest) + 0.1
-     add this constant to each value in values list to make all values positive
-  now perform modified roulette wheel selection using k
+discountFactor = 0.8
+learningRate = 0.5
+ 
+#-----------------------------------------------------------------------------
+"""
+evaluates a board, returning 1 if X won and (-1) if O won, 0 otherwise.
+"""
+
+def reinforcement(state):
+    if (state[1] == 'x'):
+        if (I.eval(state) == 'win'):
+            return 1
+        elif (I.eval((state[0], 'o')) == 'win'):
+            return -1
+        else:
+            return 0
+    if (state[1] == 'o'):
+        if (I.eval(state) == 'win'):
+            return -1
+        elif (I.eval((state[0],'x')) == 'win'):
+            return 1
+        else:
+            return 0
+
+#-----------------------------------------------------------------------------
+"""
+finds lowest or highest q-value and returns the move and its q-value
+"""
+
+def extremeQvalue(key, player, qTable): 
+    actTable = qTable[key]
+    if player == 'x': 
+        maximum = -2 # dummy starter value
+        for key, value in actTable.iteritems():
+            if value > maximum:
+                maximum = value
+                best_action = key
+        return (best_action, maximum)  
+    else:
+        minimum = 2 # dummy starter value
+        for key, value in actTable.iteritems():
+            if value < minimum:
+                minimum = value
+                best_action = key
+        return (best_action, minimum)
+
+#-----------------------------------------------------------------------------
+"""
+chooses a move from a given state.
+the current algorithm moves randomly half the time and exploit the best q value
+the other half
+
+More complicated version to try:
+1) Modified Roulette Wheel Selection
+2) Code from Mitchell (379)
+
+""" 
   
-  We could also assign probabilities for actions using the formula on page 379
-  of the Mitchell book
-   """
-   
-gamma = 0.8 # discount factor 
+def chooseMove(state, qTable):
+    rand = R.random()
+    stateKey = T.makeKey(state)   
+    actions = T.getActions(stateKey)
+    if rand < 0.5:
+        
+        # random action
+        size = len(actions)
+        return actions[R.randint(0,(size-1))]
+        
+    else:
+        # exploit best q-value
+        return extremeQvalue(stateKey, state[1], qTable)[0]
 
-def updateQvalue (stateKey, action, nextKey, reward, qTable):
-    """"
-    udpates the qTable using the function Q*(s,a) <- r + gamma*min_(a’)Q*(s’,a’)
-    Returns the float that should replace the q-value in the qTable
-    
-    Pseduocode:
-    
-    possible_actions = List.filter (fun a -> I.valid) (qTable[nextKey])
-    min_qvalue = find minimum Q value among actions
-    reward + gamma * min_qvalue
-    """
+#-----------------------------------------------------------------------------
+"""
+updates q-values in table
+"""
 
-def reinforcement (board):
-    """"
-    if the state is a win for x, return 1, if win for o, return -1, otherwise
-    initialize to a random number on [-0.15,0.15]. at least this is
-    how i understand it now
-    """"
+def updateQvalue(stateKey, action, nextKey, reward, qTable):
+  if (I.eval == 'win' or I.eval == 'tie'):
+     expected = reward
+  else:
+     # expect opponent to choose next move to optimize against the current player
+     player = stateKey[9] 
+     opponent_best = extremeQvalue(nextKey, opponent, qTable)
+     expected = reward + (discountFactor * opponent_best[1])
+  change = learningRate * (expected - qTable[stateKey][action])
+  qTable[stateKey][action] += change
+
+
+  
