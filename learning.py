@@ -10,6 +10,7 @@ import tables as T
 
 discountFactor = 0.8
 learningRate = 0.5
+chooseRandomMove = 0.2
  
 #-----------------------------------------------------------------------------
 """
@@ -62,7 +63,7 @@ def chooseMove(state, qTable):
     rand = R.random()
     stateKey = T.makeKey(state)   
     actions = T.getActions(stateKey)
-    if rand < 0.5:
+    if rand < chooseRandomMove:
         
         # random action
         size = len(actions)
@@ -82,10 +83,9 @@ def updateQvalue(firstState, action, nextState, reward, qTable):
         
         # expect opponent to choose next move to optimize against the current player
         stateKey = T.makeKey(firstState)
-        nextKey = T.makeKEy(nextState)
+        nextKey = T.makeKey(nextState)
         player = stateKey[9]    
         opponent = I.opponent(player)
-        print stateKey
         opponent_best = extremeQvalue(nextKey, opponent, qTable)
         expected = reward + (discountFactor * opponent_best[1])
         change = learningRate * (expected - qTable[stateKey][action])
@@ -93,6 +93,5 @@ def updateQvalue(firstState, action, nextState, reward, qTable):
         return qTable
         
     else:
-        print "else"
         # game over, so expected is just the final reward
         expected = reward

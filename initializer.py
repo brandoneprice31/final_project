@@ -7,6 +7,7 @@ by Vincent Chow, Stephen Albro, Peter Hickman, & Brandon Price
 """
 
 from random import randint
+from copy import deepcopy
 
 ########## TYPES ##############
 # type player = X | O
@@ -40,12 +41,15 @@ def opponent (player):
 next_state takes in a board and an action and returns the next state
 """
 def next_state(state,action):
+    state_copy = deepcopy(state)
+    board = state_copy[0]
+    player = state_copy[1]
     i = action[0]
     j = action[1]
-    state[0][i][j] = state[1]
-    opp = opponent(state[1])
-    nextState = state[0], opp
-    return (nextState)
+    board[i][j] = player
+    opp = opponent(player)
+    nextState = board, opp     
+    return nextState
     
 
 #-----------------------------------------------------------------------------
