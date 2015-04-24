@@ -16,8 +16,7 @@ from Tkinter import *
 import initializer as init
 import tables as tables
 import learning as comp
-#import tables as T
-from time import sleep
+from random import randint
 
 
 #-----------------------------------------------------------------------------
@@ -36,6 +35,18 @@ def start_game (game_type):
     cw = 500
     ch = 500
     C = Canvas(W, width=cw, height=ch)
+    
+    
+     #--------------------------------------------------------------------------
+    """
+    define comp_ticker which ticks a foo event every second
+    """
+    
+    def comp_tick ():
+        global playing
+        W.event_generate("<<foo>>")
+        if (playing == True and game_type == 'cvc'):
+            W.after(750,comp_tick)
     
     
     #--------------------------------------------------------------------------
@@ -95,7 +106,7 @@ def start_game (game_type):
            
     #--------------------------------------------------------------------------
     """
-    def add_move_listener which adds a listener for a move event
+    def human_move which performs a human move
     """
     def human_move(event):
     
@@ -133,14 +144,17 @@ def start_game (game_type):
             
             else:
                 player = init.opponent(player)
-                W.event_generate("<<foo>>")
+                W.after(750, comp_tick)
     
     
     #--------------------------------------------------------------------------
     """
-    def add_move_listener which adds a listener for a move event
+    def comp_move which does a computer move
     """
     def comp_move(event):
+
+        global board
+        global player        
         
         # get the next move from the computer
         # EDIT FROM PETER
@@ -150,8 +164,6 @@ def start_game (game_type):
         next_move = comp.chooseMove((board,player), tables.qTable)
         
         #implement the next move
-        global board
-        global player
         board = init.next_state((board,player),next_move)[0]
         draw(next_move,player)
         
@@ -159,11 +171,12 @@ def start_game (game_type):
         game_state = init.eval((board,player))
         
         if (game_state != 'continue'):
+            global playing
+            playing = False
             end_game(game_type,game_state,player)
         
         else:
             player = init.opponent(player)
-
 
     #--------------------------------------------------------------------------
     """
@@ -173,6 +186,7 @@ def start_game (game_type):
     # function that starts new game involving humans            
     def new_hvh_game(event):
         C.delete('all')
+        C.unbind("<Button-1>")
         global board
         board = init.new()
         global player
@@ -192,14 +206,26 @@ def start_game (game_type):
     # function that starts new game involving human and computer          
     def new_hvc_game(event):
         C.delete('all')
+        C.unbind("<Button-1>")
         global board
         board = init.new()
         global player
         player = init.random_player()
         draw_lines()
+        global playing
+        playing = True
         
-        C.bind("<Button-1>", human_move)
+        def human_move_bind ():
+            C.bind("<Button-1>", human_move)
+        
         W.bind("<<foo>>", comp_move)
+
+        # randomly decide who goes first
+        if (randint(0,1) == 0):
+            W.after(200, comp_tick)
+        
+        W.after(300, human_move_bind)
+        
         C.pack()
         W.mainloop()
         
@@ -212,14 +238,18 @@ def start_game (game_type):
     # function that starts new game involving computers          
     def new_cvc_game(event):
         C.delete('all')
+        C.unbind("<Button-1>")
         global board
         board = init.new()
         global player
         player = init.random_player()
         draw_lines()
+        global playing
+        playing = True
         
-        while (init.eval((board,player)) == 'continue'):
-            comp_move("automatic")
+        W.bind("<<foo>>",comp_move)
+        
+        W.after(750,comp_tick)      
         
         C.pack()
         W.mainloop()
@@ -236,7 +266,7 @@ def start_game (game_type):
     else:
         new_cvc_game('first')
     
-    
+ 
 #-----------------------------------------------------------------------------
 """
 initialize Window and Main Menu
