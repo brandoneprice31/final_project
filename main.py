@@ -1,5 +1,5 @@
 import initializer as I
-import tables as T
+import taaables as T
 import learning as L
 
 global maxGames
@@ -14,7 +14,8 @@ def gameLearning(maxGames):
     state = I.new_game()
     print state
     games = 0
-    table = T.qTable
+    ### STEPHEN CHANGED THIS
+    table = {}
   
     while (games < maxGames):
         print state[0][0]
@@ -44,5 +45,5 @@ def gameLearning(maxGames):
        
     return table
     
-gameLearning(1000)
+gameLearning(10000)
   

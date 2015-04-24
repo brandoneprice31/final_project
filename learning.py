@@ -6,7 +6,7 @@ Created on Fri Apr 17 13:39:00 2015
 
 import random as R
 import initializer as I
-import tables as T
+import taaables as T
 
 discountFactor = 0.8
 learningRate = 0.5
