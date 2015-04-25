@@ -59,7 +59,7 @@ def gameLearning(maxGames):
         pickle.dump(table, handle)
         handle.close()
     
-gameLearning(30000)
+gameLearning(30)
 
 # pick move that it has explored the least so far
 
