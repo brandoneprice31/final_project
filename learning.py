@@ -35,15 +35,15 @@ def extremeQvalue(key, player, qTable):
     if player == 'x': 
         maximum = -2 # dummy starter value...whole point is that everything greater than -2
         for key, value in actTable.iteritems():
-            if value > maximum:
-                maximum = value
+            if value[0] > maximum:
+                maximum = value[0]
                 best_action = key
         return (best_action, maximum)  
     else:
         minimum = 2 # dummy starter value
         for key, value in actTable.iteritems():
-            if value < minimum:
-                minimum = value
+            if value[0] < minimum:
+                minimum = value[0]
                 best_action = key
         return (best_action, minimum)
 
@@ -86,20 +86,6 @@ def chooseMove(state, qTable, games, maxGames):
 updates q-values in table
 """
 
-
-#def updateQvalue(stateKey, action, nextKey, reward, qTable):
-#  if (I.eval == 'win' or I.eval == 'tie'):
-#     expected = reward
-#  else:
-#     # expect opponent to choose next move to optimize against the current player
-#     player = stateKey[9] 
-#     opponent = I.opponent(player)
-#     opponent_best = extremeQvalue(nextKey, opponent, qTable)
-#     expected = reward + (discountFactor * opponent_best[1])
-#  change = learningRate * (expected - qTable[stateKey][action])
-#  qTable[stateKey][action] += change
-
-
 def updateQvalue(firstState, action, nextState, reward, qTable):
     stateKey = T.makeKey(firstState)
     
@@ -110,8 +96,8 @@ def updateQvalue(firstState, action, nextState, reward, qTable):
         opponent = I.opponent(player)
         opponent_best = extremeQvalue(nextKey, opponent, qTable)
         expected = reward + (discountFactor * opponent_best[1])
-        change = learningRate * (expected - qTable[stateKey][action])
-        qTable[stateKey][action] += change
+        change = learningRate * (expected - qTable[stateKey][action][0])
+        qTable[stateKey][action][0] += change
         return qTable
         
     # game over, so expected is just the final reward
@@ -120,9 +106,6 @@ def updateQvalue(firstState, action, nextState, reward, qTable):
         print nextState
         print reward
         expected = reward
-        change = learningRate * (expected - qTable[stateKey][action])
-        qTable[stateKey][action] += change
+        change = learningRate * (expected - qTable[stateKey][action][0])
+        qTable[stateKey][action][0] += change
         return qTable
-        
-        
-

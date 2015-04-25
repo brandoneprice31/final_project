@@ -57,6 +57,7 @@ def gameLearning(maxGames):
     # save the table in the pickle file
     with open('dict.pickle', 'wb') as handle:
         pickle.dump(table, handle)
+        handle.close()
     
 gameLearning(30000)
 
