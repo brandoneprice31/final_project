@@ -14,8 +14,10 @@ Plays games to learn q values and returns qTable
 def gameLearning(maxGames):
     state = I.new_game()
     games = 0
-    ### STEPHEN CHANGED THIS
-    table = {}
+
+    # Open the pickled dictionry
+    with open('dict.pickle', 'rb') as handle:
+        table = pickle.load(handle)
   
     while (games < maxGames):
         print state[0][0]
@@ -51,6 +53,10 @@ def gameLearning(maxGames):
     print tableupdatedvals
     # print table
     return table
+    
+    # save the table in the pickle file
+    with open('dict.pickle', 'wb') as handle:
+        pickle.dump(table, handle)
     
 gameLearning(30000)
 
