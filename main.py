@@ -50,5 +50,5 @@ def gameLearning(maxGames):
     # print table
     return table
     
-gameLearning(10000)
+gameLearning(1000000)
   
