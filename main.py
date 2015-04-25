@@ -14,6 +14,7 @@ Plays games to learn q values and returns qTable
 def gameLearning(maxGames):
     state = I.new_game()
     games = 0
+    execfile("pickle_initializer.py")
 
     # Open the pickled dictionry
     with open('dict.pickle', 'rb') as handle:
@@ -45,21 +46,31 @@ def gameLearning(maxGames):
             state = I.new_game()
             games += 1
     
-    tableupdatedvals = []
+    tabletoprint = []
+    
+    """     
     for state,actTable in table.iteritems():
         for action,qValue in actTable.iteritems():
-            if (qValue > 0.15 or qValue < -0.15):
-                tableupdatedvals.append((state, action, qValue))
-    print tableupdatedvals
+            if (qValue[0] > 0.15 or qValue[0] < -0.15):
+                tabletoprint.append((state, action, qValue))
+    """
+    
+    for state,actTable in table.iteritems():
+        for action,qValue in actTable.iteritems():
+            if (qValue[1] > 400):
+                tabletoprint.append((state, action, qValue))
+    
     # print table
-    return table
+    # print tabletoprint
     
     # save the table in the pickle file
     with open('dict.pickle', 'wb') as handle:
         pickle.dump(table, handle)
         handle.close()
+        
+    return table
     
-gameLearning(30)
+gameLearning(30000)
 
 # pick move that it has explored the least so far
 

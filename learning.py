@@ -10,7 +10,7 @@ import tables as T
 
 discountFactor = 0.8
 learningRate = 0.8
-chooseRandomMove = 0.5
+chooseLeastVisited = 0.5
  
 #-----------------------------------------------------------------------------
 """
@@ -46,6 +46,24 @@ def extremeQvalue(key, player, qTable):
                 minimum = value[0]
                 best_action = key
         return (best_action, minimum)
+        
+#-----------------------------------------------------------------------------
+"""
+Returns the least visted action from a list of actions. If there are multiple
+least-visited actions, it chooses among them randomly
+""" 
+  
+def leastVisited(stateKey, qTable):
+    aTable = qTable[stateKey]
+    
+    # list of two lists: the first is q-values, the
+    visitsList = map(list, zip(*aTable.values()))[1]
+    minimum = min(visitsList)
+    least_visited_actions = [x for x in aTable.keys() if (aTable[x][1] == minimum)]
+    
+    # random action
+    size = len(least_visited_actions)
+    return least_visited_actions[R.randint(0,(size-1))]
 
 #-----------------------------------------------------------------------------
 """
@@ -63,22 +81,25 @@ def chooseMove(state, qTable, games, maxGames):
     stateKey = T.makeKey(state)   
     
     # exploring phase
-    if (games < (maxGames * (3/4))):
+    if (games < (maxGames * 0.95)):
         rand = R.random()
-        actions = T.getActions(stateKey)
-        if rand < chooseRandomMove:
+        if rand < chooseLeastVisited:
+            print "explore"
             
-            # random action
-            size = len(actions)
-            return actions[R.randint(0,(size-1))]
-            
+            # random among least visited actions
+            print qTable[stateKey][leastVisited(stateKey, qTable)]
+            return leastVisited(stateKey, qTable)
+                 
         else:
+            print "exploit"
             # exploit best q-value
+            print qTable[stateKey][extremeQvalue(stateKey, state[1], qTable)[0]]
             return extremeQvalue(stateKey, state[1], qTable)[0]
             
     # exploitive phase
     else:
         # exploit best q-value
+        print "exploit late"
         return extremeQvalue(stateKey, state[1], qTable)[0]
 
 #-----------------------------------------------------------------------------
@@ -98,14 +119,18 @@ def updateQvalue(firstState, action, nextState, reward, qTable):
         expected = reward + (discountFactor * opponent_best[1])
         change = learningRate * (expected - qTable[stateKey][action][0])
         qTable[stateKey][action][0] += change
+        
+        # update counter
+        qTable[stateKey][action][1] += 1
         return qTable
         
     # game over, so expected is just the final reward
     else:
         print "GAME OVER:"
-        print nextState
-        print reward
         expected = reward
         change = learningRate * (expected - qTable[stateKey][action][0])
         qTable[stateKey][action][0] += change
+        
+        # update counter
+        qTable[stateKey][action][1] += 1
         return qTable

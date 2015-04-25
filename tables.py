@@ -69,7 +69,7 @@ def addKey (key, table) :
     # Get list of potential actions from the key. This is an int list.
     actions = getActions(key)
     # Store these action as keys in act_dict, values intially randomized on [-0.15,0.15].
-    act_dict = {action:(random.uniform(-0.15,.15), 0) for action in actions}
+    act_dict = {action:[random.uniform(-0.15,.15), 0] for action in actions}
     # Finally, add the key to the q table, its value being the entire act_dict.
     table[key] = act_dict
     return table
