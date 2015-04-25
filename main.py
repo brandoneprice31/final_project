@@ -45,13 +45,14 @@ def gameLearning(maxGames):
     tableupdatedvals = []
     for state,actTable in table.iteritems():
         for action,qValue in actTable.iteritems():
-            if (qValue > 0.15):
+            if (qValue > 0.15 or qValue < -0.15):
                 tableupdatedvals.append((state, action, qValue))
-    # print tableupdatedvals
+    print tableupdatedvals
     # print table
     return table
     
-
 gameLearning(30000)
+
+# pick move that it has explored the least so far
 
   
