@@ -1,9 +1,10 @@
 import initializer as I
 import tables as T
 import learning as L
+import pickle
 
 global maxGames
-MaximumGames = 30000
+MaximumGames = 100
 
 #-----------------------------------------------------------------------------
 """
@@ -13,7 +14,10 @@ Plays games to learn q values and returns qTable
 def gameLearning(maxGames):
     state = I.new_game()
     games = 0
-    table = T.qTable
+
+    # Open the pickled dictionry
+    with open('dict.pickle', 'rb') as handle:
+        table = pickle.load(handle)
   
     while (games < maxGames):
         print state[0][0]
@@ -50,5 +54,9 @@ def gameLearning(maxGames):
     # print table
     return table
     
-gameLearning(1000000)
-  
+    # save the table in the pickle file
+    # with open('dict.pickle', 'wb') as handle:
+      #   pickle.dump(table, handle)
+    
+
+gameLearning(MaximumGames)
