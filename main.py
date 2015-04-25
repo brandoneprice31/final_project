@@ -1,5 +1,5 @@
 import initializer as I
-import taaables as T
+import tables as T
 import learning as L
 
 global maxGames
