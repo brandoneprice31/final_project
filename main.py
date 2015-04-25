@@ -1,6 +1,7 @@
 import initializer as I
 import tables as T
 import learning as L
+import pickle
 
 global maxGames
 MaximumGames = 30000
