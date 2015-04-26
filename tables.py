@@ -10,7 +10,6 @@
 # qTable = dict()		<-- values in actTable are qvalues
 
 # rewardTable = dict()  <-- values in actTable are rewards
-import initializer as init
 import random
 
 """
@@ -49,16 +48,6 @@ def makeKey(state):
       # The first 9 characters will be the board, the last  characters will be the player
 
 
-
-"""
-def nextKey (state) : 
-    makeKey (nextState, opponent(player))
-    ## What's up with this function? Not sure we need it.
-    ## In main.py, nextKey is a VARIABLE, not a function.
-    
-    # PETER: I agree, I don't think we need this
-"""
-
 # HELPER FUNCTION: Gets possible actions (ints) from KEYS (string representations of states)
 #   Iterate over the string, saving the index (number) of each '_' that appears.
 #   (Note that we should never get the number 9 as an action, because actions only range
@@ -80,7 +69,7 @@ def addKey (key, table) :
     # Get list of potential actions from the key. This is an int list.
     actions = getActions(key)
     # Store these action as keys in act_dict, values intially randomized on [-0.15,0.15].
-    act_dict = {action:random.uniform(-0.15,.15) for action in actions}
+    act_dict = {action:[random.uniform(-0.15,.15), 0] for action in actions}
     # Finally, add the key to the q table, its value being the entire act_dict.
     table[key] = act_dict
     return table
