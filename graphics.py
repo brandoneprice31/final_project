@@ -161,7 +161,7 @@ def start_game (game_type):
         stateKey = tables.makeKey((board,player))
         if stateKey not in tables.qTable:
             tables.addKey(stateKey,tables.qTable)
-        next_move = comp.chooseMove((board,player), tables.qTable)
+        next_move = comp.chooseMove((board,player), tables.qTable,1,2000)
         
         #implement the next move
         board = init.next_state((board,player),next_move)[0]
@@ -192,6 +192,8 @@ def start_game (game_type):
         global player
         player = init.random_player()
         draw_lines()
+        global playing
+        playing = True
         
         C.bind("<Button-1>", human_move)
         C.pack()        
