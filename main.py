@@ -64,19 +64,14 @@ def gameLearning(maxGames):
     # print tabletoprint
     
     # save the table in the pickle file
-<<<<<<< HEAD
+
     # with open('dict.pickle', 'wb') as handle:
       #   pickle.dump(table, handle)
-=======
+
     with open('dict.pickle', 'wb') as handle:
         pickle.dump(table, handle)
         handle.close()
         
     return table
     
-gameLearning(30000)
-
-# pick move that it has explored the least so far
->>>>>>> 933ef63843210cbf32bbceb4039c7bd568a405e3
-
 gameLearning(MaximumGames)
