@@ -34,10 +34,10 @@ new returns an empty board
 def new():
     return [['wm','_','wm','_','wm','_','wm','_'],\
             ['_','wm','_','wm','_','wm','_','wm'],\
+            ['wm','_','wm','_','wm','_','wm','_'],\
             ['_','_','_','_','_','_','_','_'],\
             ['_','_','_','_','_','_','_','_'],\
-            ['_','_','_','_','_','_','_','_'],\
-            ['_','_','_','_','_','_','_','_'],\
+            ['_','rm','_','rm','_','rm','_','rm'],\
             ['rm','_','rm','_','rm','_','rm','_'],\
             ['_','rm','_','rm','_','rm','_','rm']]
 
@@ -270,6 +270,6 @@ new_state returns an empty board and new stats for each player
 """
 def new_state ():
     b = new()
-    return {'board':b,'statr':{'player':'r','men_num':8,'king_num':0},
-            'statw':{'player':'w','men_num':8,'king_num':0}}
+    return {'board':b,'statr':{'player':'r','men_num':12,'king_num':0},
+            'statw':{'player':'w','men_num':12,'king_num':0}}
     
