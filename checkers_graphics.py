@@ -297,6 +297,8 @@ def start_game (game_type):
         global state
         state = init.new_state()
         global player
+        global playing
+        playing = True
         player = init.random_player()
         draw_squares()
         draw(state['board'])
@@ -383,11 +385,11 @@ initialize Window and Main Menu
 """
 W = Tk()
 
-w = 600
-h = 600
-
 sw = W.winfo_screenwidth()
 sh = W.winfo_screenheight()
+
+w = sh - 0.15*sh
+h = w
 
 window_x = sw/2 - w/2
 window_y = sh/2 - h/2
