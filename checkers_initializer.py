@@ -237,6 +237,7 @@ def pos_actions (board, current_pos):
       
     possible_actions = [act for act in open_spaces if valid(board,act)]
     return possible_actions
+    
 
 
 #-----------------------------------------------------------------------------

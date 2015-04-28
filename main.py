@@ -72,6 +72,4 @@ def gameLearning(maxGames):
         pickle.dump(table, handle)
         handle.close()
         
-    return table
-    
-gameLearning(MaximumGames)
+# gameLearning(maximumGames)

@@ -16,7 +16,7 @@ import modules
 from Tkinter import *
 import checkers_initializer as init
 from random import randint
-import checkers_learning as comp
+import checkers_Learning as comp
 
 
 #-----------------------------------------------------------------------------
