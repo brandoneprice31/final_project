@@ -9,16 +9,6 @@ by Vincent Chow, Stephen Albro, Peter Hickman, & Brandon Price
 from random import randint
 from copy import deepcopy
 
-########## TYPES ##############
-# type player = X | O
-
-# type action = (int,int)
-
-# type board = array of arrays
-
-# type state = (board*player)
-
-########## FUNCTIONS ############
 #-----------------------------------------------------------------------------
 """
 new returns an empty board

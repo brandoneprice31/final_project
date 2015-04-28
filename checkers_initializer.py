@@ -20,11 +20,11 @@ from copy import deepcopy
 
 # type stats = dict(player:player, men_num:int, king_num:int)
 
-# type action = dict(player_type:player_type, init_pos:(int,int), final_pos:(int,int))
+# type action = dict(init_pos:(int,int), final_pos:(int,int))
 
 # type board = 8 x 8 array of arrays
 
-# type state = dict(board:board, stats:stats)
+# type state = dict(board:board, statr:stats, statw:stats)
 
 ########## FUNCTIONS ############
 #-----------------------------------------------------------------------------
@@ -53,54 +53,75 @@ def opponent (player):
 
 #-----------------------------------------------------------------------------
 """
-next_state takes in a board and an action and returns the next state
+next_state takes in a state and an action and returns the next state
 """
 def next_state(state,action):
-    board = state.board
-    stats = state.stats
-    player_type = action.player_type
-    init_i = action.init_pos[0]
-    init_j = action.init_pos[1]
-    final_i = action.final_pos[0]
-    final_j = action.final_pos[1]
-    # add the new move
-    if (player_type == 'rm' and final_i == 0):
+    board = state['board']
+    statr = state['statr']
+    statw = state['statw']
+    init_i = action['init_pos'][0]
+    init_j = action['init_pos'][1]
+    final_i = action['final_pos'][0]
+    final_j = action['final_pos'][1]
+    change_i = final_i - init_i
+    change_j = final_j - init_j
+    player_type = board[init_i][init_j]
+    # if its a jump, get rid of the character
+    if (abs(change_i) == 2 and abs(change_j) == 2):
+        opponent_type = board[init_i+change_i/2][init_j+change_j/2]
+        type_only = opponent_type[1]
+        opponent = opponent_type[0]
+        board[init_i+change_i/2][init_j+change_j/2] = '_'
+        if (type_only == 'm'):
+            if (opponent == 'r'):
+                statr['men_num'] -= 1
+            else:
+                statw['men_num'] -= 1
+        else:
+            if (opponent == 'r'):
+                statr['king_num'] -= 1
+            else:
+                statw['king_num'] -= 1
+    # somebody is being kinged
+    if (final_i == 0 and player_type == 'rm'):
+        statr['men_num'] -= 1
+        statr['king_num'] += 1
         board[final_i][final_j] = 'rk'
-        stats.king_num += 1
-    elif (player_type == 'wm' and final_i == 7):
+    elif (final_i == 7 and player_type == 'wm'):
+        statw['men_num'] -= 1
+        statw['king_num'] += 1
         board[final_i][final_j] = 'wk'
-        stats.king_num += 1
     else:
         board[final_i][final_j] = player_type
     # add the blank space
     board[init_i][init_j] = '_'
-    nextState = {'board':board,'stats':stats}
+    nextState = {'board':board, 'statr':statr, 'statw':statw}
     return nextState
     
 
 #-----------------------------------------------------------------------------
 """
-checks if a player has won and returns true or false
+checks if somebody has won and returns the winning playing
 """
-def win (stats,opponent_stats):
-    if (opponent_stats.men_num == 0 and opponent_stats.king_num == 0):
-        return stats.player
-    elif (stats.men_num == 0 and stats.king_num == 0):
-        return opponent_stats.player
+def win (stats1,stats2):
+    if (stats1['men_num'] == 0 and stats1['king_num'] == 0):
+        return stats2['player']
+    elif (stats2['men_num'] == 0 and stats2['king_num'] == 0):
+        return stats1['player']
     else:
         return 'none'
 
 #-----------------------------------------------------------------------------
 """
-eval checks if either player has won or should continues
+eval checks if either player has won or should continue
 """
 def eval (stats1,stats2):
     winning_player = win(stats1,stats2)
     # check all possible winning cases
-    if (winning_player == stats1.player):
-        return stats1.player + '_wins' # returns either 'w_wins' or 'r_wins'
-    elif (winning_player == stats2.player):
-        return stats2.player + '_wins' # returns either 'w_wins' or 'r_wins'
+    if (winning_player == stats1['player']):
+        return stats1['player'] + '_wins' # returns either 'w_wins' or 'r_wins'
+    elif (winning_player == stats2['player']):
+        return stats2['player'] + '_wins' # returns either 'w_wins' or 'r_wins'
     else: 
         return 'continue'
 
@@ -110,13 +131,14 @@ def eval (stats1,stats2):
 valid takes in a board and action and checks if it is a valid action
 """
 def valid (board,action):
-    init_i = action.init_pos[0]
-    init_j = action.init_pos[1]
-    final_i = action.final_pos[0]
-    final_j = action.final_pos[1]
+    init_i = action['init_pos'][0]
+    init_j = action['init_pos'][1]
+    final_i = action['final_pos'][0]
+    final_j = action['final_pos'][1]
     change_i = final_i - init_i
     change_j = final_j - init_j
-    player = action.player_type[0]
+    player_type = board[init_i][init_j]
+    player = player_type[0]
     opponent_player = opponent(player)
     
     # check if the action is an open space
@@ -124,22 +146,22 @@ def valid (board,action):
     
     #check if it is the correct pos for a jump
     if (abs(change_i) == 2 and abs(change_j) == 2):
-        correct_pos = (board[init_i + change_i/2][init_j + change_i/2] \
-                        == (opponent_player + 'm') or \
-                        board[init_i + change_i/2][init_j + change_i/2] \
-                        == (opponent_player + 'k'))
+        correct_pos = (board[init_i + change_i/2][init_j + change_j/2] \
+                       == (opponent_player + 'm') or \
+                       board[init_i + change_i/2][init_j + change_j/2] \
+                       == (opponent_player + 'k'))
         
     #checks if it is the correct pos for a non-jump
     else:
         correct_pos =  (abs(change_i) == 1 and abs(change_j) == 1)
     
     # is it up for red-men
-    if (action.player_type == 'rm'):
-        correct_direction = (change_i > 0)
+    if (player_type == 'rm'):
+        correct_direction = (change_i < 0)
         
     # is it down for white-mean
-    elif (action.player_type == 'wm'):
-        correct_direction = (change_i < 0)
+    elif (player_type == 'wm'):
+        correct_direction = (change_i > 0)
         
     # direction doesn't matter for kings
     else:
@@ -158,11 +180,78 @@ def valid (board,action):
 
 #-----------------------------------------------------------------------------
 """
-pos_actions takes in a board, player_type, and the current_pos of that
-player_type.  pos_actions then returns a list of all possible actions
+pos_actions takes in a board and the current_pos and 
+returns a list of all the possible actions
 """
-def pos_actions (board, player_type, current_pos):
-    return []
+def pos_actions (board, current_pos):
+    curr_i = current_pos[0]
+    curr_j = current_pos[1]        
+    player_type = board[curr_i][curr_j]
+    
+    if (player_type == '_'):
+        return 'no pieces in this position'
+    
+    player = player_type[0]
+    opponent_player = opponent(player)
+    
+    open_spaces = []
+    enemy_spaces = []
+    
+    # check spaces surrounding the current_pos
+    if (curr_i == 7):
+        check_i = [-1]
+    elif (curr_i == 0):
+        check_i = [1]
+    else:
+        check_i = [-1,1]
+        
+    if (curr_j == 7):
+        check_j = [-1]
+    elif (curr_j == 0):
+        check_j = [1]
+    else:
+        check_j = [-1,1]
+        
+    for i in check_i:
+        for j in check_j:
+            spotcheck = board[curr_i+i][curr_j+j]
+            if (spotcheck == '_'):
+                open_spaces.append({'init_pos':current_pos,
+                                    'final_pos':(curr_i+i,curr_j+j)})
+            elif (spotcheck == opponent_player + 'm' or 
+                  spotcheck == opponent_player + 'k'):
+                enemy_spaces.append((curr_i+i,curr_j+j))
+    
+    # check spaces on the other side of the enemies
+    for enemy in enemy_spaces:
+        enemy_i = enemy[0]
+        enemy_j = enemy[1]
+        change_i = enemy_i - curr_i
+        change_j = enemy_j - curr_j
+        next_i = enemy_i + change_i
+        next_j = enemy_j + change_j
+        if (0 <= next_i <= 7 and 0 <= next_j <= 7):
+            if (board[next_i][next_j] == '_'):
+                open_spaces.append({'init_pos':current_pos,
+                                    'final_pos':(next_i,next_j)})                        
+      
+    possible_actions = [act for act in open_spaces if valid(board,act)]
+    return possible_actions
+
+
+#-----------------------------------------------------------------------------
+"""
+pos_actions_left takes in a board and player and returns
+true if there are actions left for that player else it returns false false
+"""
+def pos_actions_left (board,player):
+    pos_act = []
+    for i in range(8):
+        for j in range(8):
+            if (board[i][j] == player+'m' or board[i][j] == player+'k'):
+                for act in pos_actions(board,(i,j)):
+                    pos_act.append(act)
+    return (pos_act != [])
 
 
 #-----------------------------------------------------------------------------
@@ -177,7 +266,10 @@ def random_player ():
    
 #-----------------------------------------------------------------------------     
 """
-returns an empty board and a random player
+new_state returns an empty board and new stats for each player
 """
-def new_game ():
-  return (new(), random_player())
+def new_state ():
+    b = new()
+    return {'board':b,'statr':{'player':'r','men_num':8,'king_num':0},
+            'statw':{'player':'w','men_num':8,'king_num':0}}
+    
