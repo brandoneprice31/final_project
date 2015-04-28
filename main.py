@@ -4,7 +4,8 @@ import learning as L
 import pickle
 
 global maxGames
-MaximumGames = 10000000
+# MaximumGames = 10000000
+MaximumGames = 30000
 
 #-----------------------------------------------------------------------------
 """
@@ -14,7 +15,6 @@ Plays games to learn q values and returns qTable
 def gameLearning(maxGames):
     state = I.new_game()
     games = 0
-    execfile("pickle_initializer.py")
 
     # Open the pickled dictionry
     with open('dict.pickle', 'rb') as handle:
