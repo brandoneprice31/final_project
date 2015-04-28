@@ -1,7 +1,7 @@
 """
 CS 51
 
-Tic Tac Toe Program
+Chekers Program
 
 by Vincent Chow, Stephen Albro, Peter Hickman, & Brandon Price
 """
@@ -266,10 +266,11 @@ def random_player ():
    
 #-----------------------------------------------------------------------------     
 """
-new_state returns an empty board and new stats for each player
+new_game returns an empty board and new stats for each player
 """
-def new_state ():
+def new_game ():
     b = new()
-    return {'board':b,'statr':{'player':'r','men_num':8,'king_num':0},
+    p = random_player()
+    return {'player':p,'board':b,'statr':{'player':'r','men_num':8,'king_num':0},
             'statw':{'player':'w','men_num':8,'king_num':0}}
     

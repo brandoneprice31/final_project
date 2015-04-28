@@ -16,7 +16,7 @@ import modules
 from Tkinter import *
 import checkers_initializer as init
 from random import randint
-import checkers_Learning as comp
+import checkers_learning as comp
 
 
 #-----------------------------------------------------------------------------
@@ -295,7 +295,7 @@ def start_game (game_type):
         C.delete('all')
         C.unbind("<Button-1>")
         global state
-        state = init.new_state()
+        state = init.new_game()
         global player
         player = init.random_player()
         draw_squares()
@@ -316,7 +316,7 @@ def start_game (game_type):
         C.delete('all')
         C.unbind("<Button-1>")
         global state
-        state = init.new_state()
+        state = init.new_game()
         global player
         player = init.random_player()
         draw_squares()
@@ -349,7 +349,7 @@ def start_game (game_type):
         C.delete('all')
         C.unbind("<Button-1>")
         global state
-        state = init.new_state()
+        state = init.new_game()
         global player
         player = init.random_player()
         draw_squares()
