@@ -46,28 +46,9 @@ def gameLearning(maxGames):
             state = I.new_game()
             games += 1
     
-    tabletoprint = []
-    
-    """     
-    for state,actTable in table.iteritems():
-        for action,qValue in actTable.iteritems():
-            if (qValue[0] > 0.15 or qValue[0] < -0.15):
-                tabletoprint.append((state, action, qValue))
-    """
-    
-    for state,actTable in table.iteritems():
-        for action,qValue in actTable.iteritems():
-            if (qValue[1] > 400):
-                tabletoprint.append((state, action, qValue))
-    
-    # print table
-    # print tabletoprint
-    
-    # save the table in the pickle file
 
-    # with open('dict.pickle', 'wb') as handle:
-      #   pickle.dump(table, handle)
-
+    
+    # save the table into the pickle file
     with open('dict.pickle', 'wb') as handle:
         pickle.dump(table, handle)
         handle.close()
