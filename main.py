@@ -4,7 +4,7 @@ import learning as L
 import pickle
 
 global maxGames
-MaximumGames = 100
+MaximumGames = 10000000
 
 #-----------------------------------------------------------------------------
 """
@@ -57,6 +57,5 @@ def gameLearning(maxGames):
     # save the table in the pickle file
     # with open('dict.pickle', 'wb') as handle:
       #   pickle.dump(table, handle)
-    
 
 gameLearning(MaximumGames)
