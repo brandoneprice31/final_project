@@ -18,3 +18,8 @@ def chooseMove(board,player):
     if (pos_act == []):
         return 'nothing'
     return pos_act[randint(0,len(pos_act) - 1)]
+    
+
+#def reinforcement
+
+#def updateQvalue
