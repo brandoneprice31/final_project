@@ -8,14 +8,17 @@ Created on Sat Apr 25 19:31:55 2015
 import checkers_initializer as init
 from random import randint
 
-def allPosMoves(board,player):
+def chooseMove(board,player):
     pos_act = []
     for i in range(8):
         for j in range(8):
             if (board[i][j] == player+'m' or board[i][j] == player+'k'):
                 for act in init.pos_actions(board,(i,j)):
                     pos_act.append(act)
-    return pos_act
+    if pos_act != []:
+        return pos_act[randint(0,len(pos_act)-1)]
+    else:
+        return 'nothing'
     
 
 #def reinforcement

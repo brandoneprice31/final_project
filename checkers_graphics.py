@@ -44,7 +44,7 @@ def start_game (game_type):
         global playing
         W.event_generate("<<foo>>")
         if (playing and game_type == 'cvc'):
-            W.after(200,comp_tick)
+            W.after(1,comp_tick)
     
     
     #--------------------------------------------------------------------------
