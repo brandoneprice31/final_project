@@ -274,7 +274,17 @@ def new_game ():
     return {'player':p,'board':b,\
     'statr':{'player':'r','men_num':12,'king_num':0},
             'statw':{'player':'w','men_num':12,'king_num':0}}
-    
+
+
+#-----------------------------------------------------------------------------     
+"""
+new_game returns a new state
+"""
+def new_state ():
+    b = new()
+    return {'board':b,'statr':{'player':'r','men_num':12,'king_num':0},
+            'statw':{'player':'w','men_num':12,'king_num':0}}
+
 
 #-----------------------------------------------------------------------------     
 """
