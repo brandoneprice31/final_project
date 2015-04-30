@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 """
 Created on Sat Apr 25 19:31:55 2015
-
 @author: brandoneprice31
 """
 
