@@ -17,6 +17,9 @@ from Tkinter import *
 import checkers_initializer as init
 from random import randint
 import checkers_Learning as comp
+import pickle
+import checkers_tables as tables
+
 
 
 #-----------------------------------------------------------------------------
@@ -260,8 +263,14 @@ def start_game (game_type):
 
         global state
         
-        # get the next move from the computer
-        next_move = comp.chooseMove(state,)
+        with open('checkers_dict.pickle','rb') as handle:
+            table = pickle.load(handle)
+        
+        stateKey = tables.makeKey(state)
+
+        if stateKey not in table:
+            tables.addKey(stateKey,table)
+        next_move = comp.chooseMove(state,table,99,100)
         
         if (next_move == 'nothing'):
             state['player'] = init.opponent(state['player'])
