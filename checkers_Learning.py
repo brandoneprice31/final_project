@@ -102,7 +102,7 @@ def chooseMove(state, qTable, games, maxGames):
     if pos_act != []:
         
         # exploring phase
-        if (games < (maxGames * 0.95)):
+        if (games < (maxGames * 1.01)):
             rand = R.random()
             if rand < chooseLeastVisited:
                 print "explore"
