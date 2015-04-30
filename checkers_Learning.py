@@ -70,10 +70,12 @@ def leastVisited(state, qTable):
         new_key = T.makeKey(new_state)
         visits = qTable[new_key][1]
         actions_visits_list.append((action,visits))
-    visitsList = map(list, zip(*actions_visits_list))[0]
+    
+    # make list of least-visited actions
+    visitsList = map(list, zip(*actions_visits_list))[1]
     minimum = min(visitsList)
-    least_visited_actions = [x for x in actions_visits_list \
-        if (actions_visits_list[x][1] == minimum)]
+    actions_visits_list = [x for x in actions_visits_list if (x[1] == minimum)]
+    least_visited_actions = map(list, zip(*actions_visits_list))[0]
     
     # random action
     size = len(least_visited_actions)
@@ -100,7 +102,7 @@ def chooseMove(state, qTable, games, maxGames):
                 print "explore"
                 
                 # random among least visited actions
-                return leastVisited(state, qTable)[0]
+                return leastVisited(state, qTable)
                      
             else:
                 print "exploit"

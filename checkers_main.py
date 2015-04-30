@@ -58,7 +58,7 @@ def gameLearning(maxGames):
         if nextKey not in table.keys():
             table = T.addKey(nextKey, table)
         table = L.updateQvalue(state, action, nextState, reward, table)
-        if (I.eval(nextState) == 'continue'):
+        if (I.eval(nextState['statr'], nextState['statw']) == 'continue'):
             state = nextState
         else:
             state = I.new_game()
