@@ -4,7 +4,7 @@ import learning as L
 import pickle
 
 global maxGames
-MaximumGames = 10000000
+MaximumGames = 30000
 
 #-----------------------------------------------------------------------------
 """
