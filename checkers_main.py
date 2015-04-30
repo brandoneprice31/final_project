@@ -53,11 +53,7 @@ def gameLearning(maxGames):
         print state['board']
         if stateKey not in table.keys():
             table = T.addKey(stateKey, table)
-        action = L.chooseMove(state,table, games, maxGames)
-        # If no action was available, next player goes again.
-        if (action == 'nothing'):
-            state['player'] = I.opponent(state['player'])
-            action = L.chooseMove(state,table,games,maxGames)
+        action = L.chooseMove(state,table, games, maxGames)            
         nextState = I.next_state(state,action)
         reward = L.reinforcement(nextState)
         table = L.updateQvalue(state, nextState, reward, table)
