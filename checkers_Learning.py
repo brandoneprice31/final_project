@@ -77,7 +77,7 @@ def leastVisited(state, qTable):
     
     # random action
     size = len(least_visited_actions)
-    return least_visited_actions[R.randint(0,(size-1))]
+    return least_visited_actions[R.randint(0,(size-1))][0]
 
 #-----------------------------------------------------------------------------
 """
@@ -101,8 +101,8 @@ def chooseMove(state, qTable, games, maxGames):
                 print "explore"
                 
                 # random among least visited actions
-                print qTable[stateKey][leastVisited(stateKey, qTable)]
-                return leastVisited(stateKey, qTable)
+                print leastVisited(state, qTable)[0]
+                return leastVisited(stateKey, qTable)[1]
                      
             else:
                 print "exploit"
