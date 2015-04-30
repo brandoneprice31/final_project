@@ -125,5 +125,27 @@ def chooseMove(state, qTable, games, maxGames):
 updates q-values in table
 """
 
-def updateQvalue(firstState, action, nextState, reward, qTable):
-    return ""
+def updateQvalue(firstState, nextState, reward, qTable):
+    stateKey = T.makeKey(firstState)
+    
+    if (I.eval(nextState) == 'continue'):
+        nextKey = T.makeKey(nextState)
+        player = nextState['player']
+        opponent = I.opponent(player)
+        opponent_best = extremeQvalue(nextKey,opponent,qTable)
+        expected = reward + (discountFactor * opponent_best[1])
+        change = learningRate * (expected - qTable[stateKey][0])
+        qTable[stateKey][0] += change
+        
+        # update no. times visited
+        qTable[stateKey][1] += 1
+        return qTable
+    else:
+        expected = reward
+        change = learningRate * (expected - qTable[stateKey][0])
+        qTable[stateKey][0] += change
+        # update no. times visited
+        qTable[stateKey][1] += 1
+        return qTable
+        
+
