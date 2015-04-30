@@ -7,6 +7,7 @@ by Vincent Chow, Stephen Albro, Peter Hickman, & Brandon Price
 """
 
 from random import randint
+from copy import deepcopy
 
 ########## TYPES ##############
 # type player = 'w' | 'r'
@@ -55,9 +56,9 @@ def opponent (player):
 next_state takes in a state and an action and returns the next state
 """
 def next_state(state,action):
-    board = state['board']
-    statr = state['statr']
-    statw = state['statw']
+    board = deepcopy(state['board'])
+    statr = deepcopy(state['statr'])
+    statw = deepcopy(state['statw'])
     init_i = action['init_pos'][0]
     init_j = action['init_pos'][1]
     final_i = action['final_pos'][0]
@@ -115,16 +116,23 @@ def win (stats1,stats2):
 """
 eval checks if either player has won or should continue
 """
-def eval (stats1,stats2):
-    winning_player = win(stats1,stats2)
+def eval (state):
+    stats1 = state['statr']
+    stats2 = state['statw']
+    actions = allPosMoves(state['board'],state['player'])
+    
+    # if no available moves for current player, opponent wins
+    if (actions == []):
+        return (opponent(state['player']) + '_wins')
+    else:
+        return 'continue'
+    """
     # check all possible winning cases
-    if (winning_player == stats1['player']):
+    elif (winning_player == stats1['player']):
         return stats1['player'] + '_wins' # returns either 'w_wins' or 'r_wins'
     elif (winning_player == stats2['player']):
         return stats2['player'] + '_wins' # returns either 'w_wins' or 'r_wins'
-    else: 
-        return 'continue'
-
+    """
 
 #-----------------------------------------------------------------------------
 """

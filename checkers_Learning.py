@@ -18,9 +18,9 @@ evaluates a state, returning 1 if red won and (-1) if white won, 0 otherwise.
 """
 
 def reinforcement(state):
-    if I.eval(state['statr'], state['statw']) == 'r_wins':
+    if I.eval(state) == 'r_wins':
             return 1
-    elif I.eval(state['statr'], state['statw']) == 'w_wins':
+    elif I.eval(state) == 'w_wins':
             return -1
     else:
         return 0
@@ -39,6 +39,8 @@ def extremeQvalue(state, player, qTable):
         for action in actions:
             new_state = I.next_state(state, action)
             new_key = T.makeKey(new_state)
+            if new_key not in qTable.keys():
+                qTable = T.addKey(new_key, qTable)
             if qTable[new_key][0] > maximum:
                 maximum = qTable[new_key][0]
                 best_action = action
@@ -48,6 +50,8 @@ def extremeQvalue(state, player, qTable):
         for action in actions:
             new_state = I.next_state(state, action)
             new_key = T.makeKey(new_state)
+            if new_key not in qTable.keys():
+                qTable = T.addKey(new_key, qTable)
             if qTable[new_key][0] < minimum:
                 minimum = qTable[new_key][0]
                 best_action = action
@@ -63,16 +67,21 @@ least-visited actions, it chooses among them randomly
 def leastVisited(state, qTable):
     actions = I.allPosMoves(state['board'], state['player'])
     
-    # create list of number of visits to each possible new state
-    visitsList = []    
+    # create list of action-visits tuples for each possible new state
+    actions_visits_list = []    
     for action in actions:
         new_state = I.next_state(state, action)
         new_key = T.makeKey(new_state)
+        if new_key not in qTable.keys():
+            qTable = T.addKey(new_key, qTable)
         visits = qTable[new_key][1]
-        visitsList.append(action,visits)
+        actions_visits_list.append((action,visits))
+    
+    # make list of least-visited actions
+    visitsList = map(list, zip(*actions_visits_list))[1]
     minimum = min(visitsList)
-    least_visited_actions = \
-        [x for x in visitsList if (visitsList[x][1] == minimum)]
+    actions_visits_list = [x for x in actions_visits_list if (x[1] == minimum)]
+    least_visited_actions = map(list, zip(*actions_visits_list))[0]
     
     # random action
     size = len(least_visited_actions)
@@ -87,35 +96,30 @@ exploits the best move.
 """ 
 
 def chooseMove(state, qTable, games, maxGames):
-    stateKey = T.makeKey(state) 
     pos_act = I.allPosMoves(state['board'], state['player'])
     
     # if some moves are available
     if pos_act != []:
         
         # exploring phase
-        if (games < (maxGames * 0.95)):
+        if (games < (maxGames * 1.01)):
             rand = R.random()
             if rand < chooseLeastVisited:
                 print "explore"
                 
                 # random among least visited actions
-                print qTable[stateKey][leastVisited(stateKey, qTable)]
-                return leastVisited(stateKey, qTable)
+                return leastVisited(state, qTable)
                      
             else:
                 print "exploit"
                 # exploit best q-value
-                print qTable[stateKey][extremeQvalue(stateKey, state[1], qTable)[0]]
-                return extremeQvalue(stateKey, state[1], qTable)[0]
+                return extremeQvalue(state, state['player'], qTable)[0]
                 
         # exploitive phase
         else:
             # exploit best q-value
             print "exploit late"
-            return extremeQvalue(stateKey, state[1], qTable)[0]        
-            
-            return pos_act[R.randint(0,len(pos_act)-1)]
+            return extremeQvalue(state, state['player'], qTable)[0]        
         
     # if no moves are available
     else:
@@ -127,5 +131,26 @@ def chooseMove(state, qTable, games, maxGames):
 updates q-values in table
 """
 
-def updateQvalue(firstState, action, nextState, reward, qTable):
-    return ""
+def updateQvalue(firstState, nextState, reward, qTable):
+    stateKey = T.makeKey(firstState)
+    
+    if (I.eval(nextState) == 'continue'):
+        player = nextState['player']
+        opponent = I.opponent(player)
+        opponent_best = extremeQvalue(nextState, opponent, qTable)
+        expected = reward + (discountFactor * opponent_best[1])
+        change = learningRate * (expected - qTable[stateKey][0])
+        qTable[stateKey][0] += change
+        
+        # update no. times visited
+        qTable[stateKey][1] += 1
+        return qTable
+    else:
+        expected = reward
+        change = learningRate * (expected - qTable[stateKey][0])
+        qTable[stateKey][0] += change
+        # update no. times visited
+        qTable[stateKey][1] += 1
+        return qTable
+        
+

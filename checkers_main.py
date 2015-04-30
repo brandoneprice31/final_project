@@ -27,7 +27,7 @@ Created on Tue Apr 28 06:59:33 2015
 
 import checkers_initializer as I
 import checkers_tables as T
-import checkers_learning as L
+import checkers_Learning as L
 import pickle
 
 global maxGames
@@ -40,7 +40,7 @@ Plays games to learn q values and returns qTable
 """
 
 def gameLearning(maxGames):
-    state = I.new_game()
+    state = I.new_state()
     games = 0
 
     # Open the checkers pickled dictionary
@@ -49,21 +49,18 @@ def gameLearning(maxGames):
   
     while (games < maxGames):
         stateKey = T.makeKey(state)
+        print state['player']
+        print state['board']
         if stateKey not in table.keys():
             table = T.addKey(stateKey, table)
-        action = L.chooseMove(state,table, games, maxGames)
+        action = L.chooseMove(state,table, games, maxGames)            
         nextState = I.next_state(state,action)
-        ## Probaly ignore this: potentially Brandom might change this:
-        ## nextState['player'] = I.opponent([state['player'])
-        nextKey = T.makeKey(nextState)
         reward = L.reinforcement(nextState)
-        if nextKey not in table.keys():
-            table = T.addKey(nextKey, table)
-        table = L.updateQvalue(state, action, nextState, reward, table)
+        table = L.updateQvalue(state, nextState, reward, table)
         if (I.eval(nextState) == 'continue'):
             state = nextState
         else:
-            state = I.new_game()
+            state = I.new_state()
             games += 1
 
     # Save file to checkers pickle
@@ -72,4 +69,4 @@ def gameLearning(maxGames):
         handle.close()
    
    
-gameLearning(MaximumGames)
+gameLearning(1000)

@@ -171,7 +171,7 @@ def start_game (game_type):
             draw(state['board'])
             
             # check game state
-            game_state = init.eval(state['statr'],state['statw'])
+            game_state = init.eval(state)
             # if game is over
             if (game_state != 'continue'):
                 global playing
@@ -261,7 +261,7 @@ def start_game (game_type):
         global state
         
         # get the next move from the computer
-        next_move = comp.chooseMove(state['board'],state['player'])
+        next_move = comp.chooseMove(state,)
         
         if (next_move == 'nothing'):
             state['player'] = init.opponent(state['player'])
@@ -271,7 +271,7 @@ def start_game (game_type):
             draw(state['board'])
             
             # check game states
-            game_state = init.eval(state['statr'],state['statw'])
+            game_state = init.eval(state)
             
             # if game is over
             if (game_state != 'continue'):
