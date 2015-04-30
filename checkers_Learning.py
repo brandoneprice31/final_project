@@ -130,7 +130,7 @@ def updateQvalue(firstState, nextState, reward, qTable):
         nextKey = T.makeKey(nextState)
         player = nextState['player']
         opponent = I.opponent(player)
-        opponent_best = extremeQvalue(nextKey,opponent,qTable)
+        opponent_best = extremeQvalue(nextState,opponent,qTable)
         expected = reward + (discountFactor * opponent_best[1])
         change = learningRate * (expected - qTable[stateKey][0])
         qTable[stateKey][0] += change

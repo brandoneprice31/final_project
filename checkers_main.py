@@ -52,7 +52,7 @@ def gameLearning(maxGames):
         if stateKey not in table.keys():
             table = T.addKey(stateKey, table)
         action = L.chooseMove(state,table, games, maxGames)
-        # If no action was available, next player goes again.
+        # If no action was available, next player goes twice in a row.
         if (action == 'nothing'):
             state['player'] = I.opponent(state['player'])
             action = L.chooseMove(state,table,games,maxGames)
