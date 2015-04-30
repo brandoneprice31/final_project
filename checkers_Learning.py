@@ -7,7 +7,7 @@ Created on Sat Apr 25 19:31:55 2015
 
 import checkers_initializer as I
 import checkers_tables as T
-from random import randint
+import random as R
 
 #-----------------------------------------------------------------------------
 """
@@ -60,10 +60,16 @@ least-visited actions, it chooses among them randomly
 def leastVisited(state, qTable):
     actions = I.allPosMoves(state['board'], state['player'])
     
-    # list of two lists: the first is q-values, the
-    visitsList = map(list, zip(*aTable.values()))[1]
+    # create list of number of visits to each possible new state
+    visitsList = []    
+    for action in actions:
+        new_state = I.next_state(state, action)
+        new_key = T.makeKey(new_state)
+        visits = qTable[new_key][1]
+        visitsList.append(action,visits)
     minimum = min(visitsList)
-    least_visited_actions = [x for x in aTable.keys() if (aTable[x][1] == minimum)]
+    least_visited_actions = \
+        [x for x in visitsList if (visitsList[x][1] == minimum)]
     
     # random action
     size = len(least_visited_actions)
@@ -77,12 +83,37 @@ visited moves the other half of the time. In the last 5% of games, it simply
 exploits the best move.
 """ 
 
-def chooseMove(board,player):
+def chooseMove(state, qTable, games, maxGames):
     pos_act = I.allPosMoves(board,player)
     if pos_act != []:
         return pos_act[randint(0,len(pos_act)-1)]
     else:
         return 'nothing'
+        
+def chooseMove(state, qTable, games, maxGames):
+    stateKey = T.makeKey(state)   
+    
+    # exploring phase
+    if (games < (maxGames * 0.95)):
+        rand = R.random()
+        if rand < chooseLeastVisited:
+            print "explore"
+            
+            # random among least visited actions
+            print qTable[stateKey][leastVisited(stateKey, qTable)]
+            return leastVisited(stateKey, qTable)
+                 
+        else:
+            print "exploit"
+            # exploit best q-value
+            print qTable[stateKey][extremeQvalue(stateKey, state[1], qTable)[0]]
+            return extremeQvalue(stateKey, state[1], qTable)[0]
+            
+    # exploitive phase
+    else:
+        # exploit best q-value
+        print "exploit late"
+        return extremeQvalue(stateKey, state[1], qTable)[0]
     
 #-----------------------------------------------------------------------------
 """

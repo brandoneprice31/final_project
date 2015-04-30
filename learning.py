@@ -56,7 +56,7 @@ least-visited actions, it chooses among them randomly
 def leastVisited(stateKey, qTable):
     aTable = qTable[stateKey]
     
-    # create list of 
+    # create list of number of visits to each possible new state
     visitsList = map(list, zip(*aTable.values()))[1]
     minimum = min(visitsList)
     least_visited_actions = [x for x in aTable.keys() if (aTable[x][1] == minimum)]

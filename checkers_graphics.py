@@ -248,7 +248,7 @@ def start_game (game_type):
                     C.create_oval(n_j*w/8+5,n_i*h/8+5,(n_j+1)*w/8-5,
                                   (n_i+1)*h/8-5,fill='yellow',tags='temp')                  
                 C.bind("<Button-1>", human_move)
-            # goto the next player if there are no moves left
+            # go to the next player if there are no moves left
             if (not init.pos_actions_left(state['board'],player)):
                 player = init.opponent(player)
     
