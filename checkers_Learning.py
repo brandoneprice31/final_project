@@ -18,9 +18,9 @@ evaluates a state, returning 1 if red won and (-1) if white won, 0 otherwise.
 """
 
 def reinforcement(state):
-    if I.eval(state['statr'], state['statw']) == 'r_wins':
+    if I.eval(state) == 'r_wins':
             return 1
-    elif I.eval(state['statr'], state['statw']) == 'w_wins':
+    elif I.eval(state) == 'w_wins':
             return -1
     else:
         return 0
@@ -39,6 +39,8 @@ def extremeQvalue(state, player, qTable):
         for action in actions:
             new_state = I.next_state(state, action)
             new_key = T.makeKey(new_state)
+            if new_key not in qTable.keys():
+                qTable = T.addKey(new_key, qTable)
             if qTable[new_key][0] > maximum:
                 maximum = qTable[new_key][0]
                 best_action = action
@@ -48,6 +50,8 @@ def extremeQvalue(state, player, qTable):
         for action in actions:
             new_state = I.next_state(state, action)
             new_key = T.makeKey(new_state)
+            if new_key not in qTable.keys():
+                qTable = T.addKey(new_key, qTable)
             if qTable[new_key][0] < minimum:
                 minimum = qTable[new_key][0]
                 best_action = action
@@ -68,6 +72,8 @@ def leastVisited(state, qTable):
     for action in actions:
         new_state = I.next_state(state, action)
         new_key = T.makeKey(new_state)
+        if new_key not in qTable.keys():
+            qTable = T.addKey(new_key, qTable)
         visits = qTable[new_key][1]
         actions_visits_list.append((action,visits))
     
@@ -132,7 +138,7 @@ def updateQvalue(firstState, nextState, reward, qTable):
         nextKey = T.makeKey(nextState)
         player = nextState['player']
         opponent = I.opponent(player)
-        opponent_best = extremeQvalue(nextKey,opponent,qTable)
+        opponent_best = extremeQvalue(nextState, opponent, qTable)
         expected = reward + (discountFactor * opponent_best[1])
         change = learningRate * (expected - qTable[stateKey][0])
         qTable[stateKey][0] += change
