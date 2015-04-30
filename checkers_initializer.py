@@ -68,6 +68,7 @@ def next_state(state,action):
     # if its a jump, get rid of the character
     if (abs(change_i) == 2 and abs(change_j) == 2):
         opponent_type = board[init_i+change_i/2][init_j+change_j/2]
+        print opponent_type
         type_only = opponent_type[1]
         opponent_player = opponent_type[0]
         board[init_i+change_i/2][init_j+change_j/2] = '_'
@@ -115,7 +116,9 @@ def win (stats1,stats2):
 """
 eval checks if either player has won or should continue
 """
-def eval (stats1,stats2):
+def eval (state):
+    stats1 = state['statr']
+    stats2 = state['statw']
     winning_player = win(stats1,stats2)
     # check all possible winning cases
     if (winning_player == stats1['player']):

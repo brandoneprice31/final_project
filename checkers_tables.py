@@ -44,7 +44,7 @@ def makeKey(state):
 
 # Adds the key to qTable, with its value being a tuple (initial random Q val, no. times visited)
 def addKey (key, table): 
-    table[key] = (random.uniform(-0.15,.15),1)
+    table[key] = [random.uniform(-0.15,.15),1]
     return table
          
 
