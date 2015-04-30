@@ -159,12 +159,9 @@ def start_game (game_type):
         
         C.unbind('<Button-1>')
         # get the next move from the computer
-        # Stephen's potential edits:
         with open('dict.pickle', 'rb') as handle:
             table = pickle.load(handle)
 
-        
-        # EDIT FROM PETER
         stateKey = tables.makeKey((board,player))
         if stateKey not in table:
             tables.addKey(stateKey,table)
