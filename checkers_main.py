@@ -49,23 +49,18 @@ def gameLearning(maxGames):
   
     while (games < maxGames):
         stateKey = T.makeKey(state)
+        print state['player']
+        print state['board']
         if stateKey not in table.keys():
             table = T.addKey(stateKey, table)
-        action = L.chooseMove(state,table, games, maxGames)
-        # If no action was available, next player goes again.
-        if (action == 'nothing'):
-            state['player'] = I.opponent(state['player'])
-            action = L.chooseMove(state,table,games,maxGames)
+        action = L.chooseMove(state,table, games, maxGames)            
         nextState = I.next_state(state,action)
-        nextKey = T.makeKey(nextState)
         reward = L.reinforcement(nextState)
-        if nextKey not in table.keys():
-            table = T.addKey(nextKey, table)
-        table = L.updateQvalue(state, action, nextState, reward, table)
-        if (I.eval(nextState['statr'], nextState['statw']) == 'continue'):
+        table = L.updateQvalue(state, nextState, reward, table)
+        if (I.eval(nextState) == 'continue'):
             state = nextState
         else:
-            state = I.new_game()
+            state = I.new_state()
             games += 1
 
     # Save file to checkers pickle
