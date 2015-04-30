@@ -49,8 +49,6 @@ def gameLearning(maxGames):
   
     while (games < maxGames):
         stateKey = T.makeKey(state)
-        print state['player']
-        print state['board']
         if stateKey not in table.keys():
             table = T.addKey(stateKey, table)
         action = L.chooseMove(state,table, games, maxGames)            
@@ -62,12 +60,11 @@ def gameLearning(maxGames):
         else:
             state = I.new_state()
             games += 1
+            print games
 
     # Save file to checkers pickle
     with open('checkers_dict.pickle', 'wb') as handle:
         pickle.dump(table, handle)
         handle.close()
    
-   
-
 gameLearning(1000)
