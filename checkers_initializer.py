@@ -274,7 +274,7 @@ def new_game ():
     return {'player':p,'board':b,\
     'statr':{'player':'r','men_num':12,'king_num':0},
             'statw':{'player':'w','men_num':12,'king_num':0}}
-    
+
 
 #-----------------------------------------------------------------------------     
 """

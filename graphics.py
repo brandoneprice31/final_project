@@ -157,6 +157,7 @@ def start_game (game_type):
         global board
         global player        
         
+        C.unbind('<Button-1>')
         # get the next move from the computer
         # Stephen's potential edits:
         with open('dict.pickle', 'rb') as handle:
@@ -183,6 +184,7 @@ def start_game (game_type):
         
         else:
             player = init.opponent(player)
+            C.bind('<Button-1>',human_move)
 
     #--------------------------------------------------------------------------
     """
