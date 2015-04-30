@@ -7,6 +7,7 @@ by Vincent Chow, Stephen Albro, Peter Hickman, & Brandon Price
 """
 
 from random import randint
+from copy import deepcopy
 
 ########## TYPES ##############
 # type player = 'w' | 'r'
@@ -55,9 +56,9 @@ def opponent (player):
 next_state takes in a state and an action and returns the next state
 """
 def next_state(state,action):
-    board = state['board']
-    statr = state['statr']
-    statw = state['statw']
+    board = deepcopy(state['board'])
+    statr = deepcopy(state['statr'])
+    statw = deepcopy(state['statw'])
     init_i = action['init_pos'][0]
     init_j = action['init_pos'][1]
     final_i = action['final_pos'][0]
@@ -68,7 +69,6 @@ def next_state(state,action):
     # if its a jump, get rid of the character
     if (abs(change_i) == 2 and abs(change_j) == 2):
         opponent_type = board[init_i+change_i/2][init_j+change_j/2]
-        print opponent_type
         type_only = opponent_type[1]
         opponent_player = opponent_type[0]
         board[init_i+change_i/2][init_j+change_j/2] = '_'
