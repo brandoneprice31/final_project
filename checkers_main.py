@@ -43,9 +43,9 @@ def gameLearning(maxGames):
     state = I.new_game()
     games = 0
 
-    # Open the CHECKERS CHECKERS CHECKERS CHECKERS pickled dictionry
-    # with open('checkers_dict.pickle', 'rb') as handle:
-        # table = pickle.load(handle)
+    # Open the checkers pickled dictionary
+    with open('checkers_dict.pickle', 'rb') as handle:
+        table = pickle.load(handle)
   
     while (games < maxGames):
         stateKey = T.makeKey(state)
@@ -65,33 +65,11 @@ def gameLearning(maxGames):
         else:
             state = I.new_game()
             games += 1
-    
-    tabletoprint = []
-    
-    """     
-    for state,actTable in table.iteritems():
-        for action,qValue in actTable.iteritems():
-            if (qValue[0] > 0.15 or qValue[0] < -0.15):
-                tabletoprint.append((state, action, qValue))
-    """
-    
-    for state,actTable in table.iteritems():
-        for action,qValue in actTable.iteritems():
-            if (qValue[1] > 400):
-                tabletoprint.append((state, action, qValue))
-    
-    # print table
-    # print tabletoprint
-    
-    # save the table in the pickle file
 
-    # with open('dict.pickle', 'wb') as handle:
-      #   pickle.dump(table, handle)
-
+    # Save file to checkers pickle
     with open('checkers_dict.pickle', 'wb') as handle:
         pickle.dump(table, handle)
         handle.close()
-        
-    return table
-    
+   
+   
 gameLearning(MaximumGames)
