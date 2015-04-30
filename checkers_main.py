@@ -60,7 +60,11 @@ def gameLearning(maxGames):
         else:
             state = I.new_state()
             games += 1
+<<<<<<< HEAD
             print (games)
+=======
+            print games
+>>>>>>> aeb9dcfa7899e986d138b933216a26952703d3d1
 
     # Save file to checkers pickle
     with open('checkers_dict.pickle', 'wb') as handle:
@@ -68,4 +72,8 @@ def gameLearning(maxGames):
         handle.close()
    
    
+<<<<<<< HEAD
 gameLearning(1000)
+=======
+gameLearning(10)
+>>>>>>> aeb9dcfa7899e986d138b933216a26952703d3d1
