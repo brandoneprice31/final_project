@@ -56,7 +56,7 @@ least-visited actions, it chooses among them randomly
 def leastVisited(stateKey, qTable):
     aTable = qTable[stateKey]
     
-    # list of two lists: the first is q-values, the
+    # create list of number of visits to each possible new state
     visitsList = map(list, zip(*aTable.values()))[1]
     minimum = min(visitsList)
     least_visited_actions = [x for x in aTable.keys() if (aTable[x][1] == minimum)]
@@ -67,14 +67,10 @@ def leastVisited(stateKey, qTable):
 
 #-----------------------------------------------------------------------------
 """
-chooses a move from a given state.
-the current algorithm moves randomly half the time and exploit the best q value
-the other half
-
-More complicated version to try:
-1) Modified Roulette Wheel Selection
-2) Code from Mitchell (379)
-
+Chooses a move from a given state. First the first 95% of the games, it 
+exploits the best move available half the time and chooses one of the least-
+visited moves the other half of the time. In the last 5% of games, it simply 
+exploits the best move.
 """ 
   
 def chooseMove(state, qTable, games, maxGames):

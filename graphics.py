@@ -17,6 +17,7 @@ import initializer as init
 import tables as tables
 import learning as comp
 from random import randint
+import pickle
 
 
 #-----------------------------------------------------------------------------
@@ -156,12 +157,18 @@ def start_game (game_type):
         global board
         global player        
         
+        C.unbind('<Button-1>')
         # get the next move from the computer
+        # Stephen's potential edits:
+        with open('dict.pickle', 'rb') as handle:
+            table = pickle.load(handle)
+
+        
         # EDIT FROM PETER
         stateKey = tables.makeKey((board,player))
-        if stateKey not in tables.qTable:
-            tables.addKey(stateKey,tables.qTable)
-        next_move = comp.chooseMove((board,player), tables.qTable,1,2000)
+        if stateKey not in table:
+            tables.addKey(stateKey,table)
+        next_move = comp.chooseMove((board,player), table, 99, 100)
         
         #implement the next move
         board = init.next_state((board,player),next_move)[0]
@@ -177,6 +184,7 @@ def start_game (game_type):
         
         else:
             player = init.opponent(player)
+            C.bind('<Button-1>',human_move)
 
     #--------------------------------------------------------------------------
     """
@@ -285,6 +293,7 @@ window_x = sw/2 - w/2
 window_y = sh/2 - h/2
 
 W.title('Tic Tac Toe')
+
 W.geometry('%dx%d+%d+%d'%(w,h,window_x,window_y))
 W.resizable(width=FALSE, height=FALSE)
 

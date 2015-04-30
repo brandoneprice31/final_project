@@ -1,13 +1,12 @@
 """
 CS 51
 
-Tic Tac Toe Program
+Chekers Program
 
 by Vincent Chow, Stephen Albro, Peter Hickman, & Brandon Price
 """
 
 from random import randint
-from copy import deepcopy
 
 ########## TYPES ##############
 # type player = 'w' | 'r'
@@ -34,10 +33,10 @@ new returns an empty board
 def new():
     return [['wm','_','wm','_','wm','_','wm','_'],\
             ['_','wm','_','wm','_','wm','_','wm'],\
+            ['wm','_','wm','_','wm','_','wm','_'],\
             ['_','_','_','_','_','_','_','_'],\
             ['_','_','_','_','_','_','_','_'],\
-            ['_','_','_','_','_','_','_','_'],\
-            ['_','_','_','_','_','_','_','_'],\
+            ['_','rm','_','rm','_','rm','_','rm'],\
             ['rm','_','rm','_','rm','_','rm','_'],\
             ['_','rm','_','rm','_','rm','_','rm']]
 
@@ -70,15 +69,15 @@ def next_state(state,action):
     if (abs(change_i) == 2 and abs(change_j) == 2):
         opponent_type = board[init_i+change_i/2][init_j+change_j/2]
         type_only = opponent_type[1]
-        opponent = opponent_type[0]
+        opponent_player = opponent_type[0]
         board[init_i+change_i/2][init_j+change_j/2] = '_'
         if (type_only == 'm'):
-            if (opponent == 'r'):
+            if (opponent_player == 'r'):
                 statr['men_num'] -= 1
             else:
                 statw['men_num'] -= 1
         else:
-            if (opponent == 'r'):
+            if (opponent_player == 'r'):
                 statr['king_num'] -= 1
             else:
                 statw['king_num'] -= 1
@@ -93,9 +92,10 @@ def next_state(state,action):
         board[final_i][final_j] = 'wk'
     else:
         board[final_i][final_j] = player_type
+    enemy = opponent(state['player'])
     # add the blank space
     board[init_i][init_j] = '_'
-    nextState = {'board':board, 'statr':statr, 'statw':statw}
+    nextState = {'player':enemy, 'board':board, 'statr':statr, 'statw':statw}
     return nextState
     
 
@@ -237,6 +237,7 @@ def pos_actions (board, current_pos):
       
     possible_actions = [act for act in open_spaces if valid(board,act)]
     return possible_actions
+    
 
 
 #-----------------------------------------------------------------------------
@@ -266,10 +267,26 @@ def random_player ():
    
 #-----------------------------------------------------------------------------     
 """
-new_state returns an empty board and new stats for each player
+new_game returns an empty board and new stats for each player
 """
 def new_state ():
     b = new()
-    return {'board':b,'statr':{'player':'r','men_num':8,'king_num':0},
-            'statw':{'player':'w','men_num':8,'king_num':0}}
-    
+    p = random_player()
+    return {'player':p,'board':b,\
+    'statr':{'player':'r','men_num':12,'king_num':0},
+            'statw':{'player':'w','men_num':12,'king_num':0}}
+
+
+#-----------------------------------------------------------------------------     
+"""
+allPosMoves takes in a board and player and returns all of the possible moves
+of that player in a list
+"""
+def allPosMoves(board,player):
+    pos_act = []
+    for i in range(8):
+        for j in range(8):
+            if (board[i][j] == player+'m' or board[i][j] == player+'k'):
+                for act in pos_actions(board,(i,j)):
+                    pos_act.append(act)
+    return pos_act

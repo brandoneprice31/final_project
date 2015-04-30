@@ -44,7 +44,7 @@ def start_game (game_type):
         global playing
         W.event_generate("<<foo>>")
         if (playing and game_type == 'cvc'):
-            W.after(200,comp_tick)
+            W.after(1,comp_tick)
     
     
     #--------------------------------------------------------------------------
@@ -171,16 +171,15 @@ def start_game (game_type):
             draw(state['board'])
             
             # check game state
-            global player
             game_state = init.eval(state['statr'],state['statw'])
             # if game is over
             if (game_state != 'continue'):
                 global playing
                 playing = False
-                end_game(game_type,game_state,player)
+                end_game(game_type,game_state,state['player'])
             # game is not over
             else:
-                player = init.opponent(player)
+                C.unbind('<Button-1>')
                 W.after(750, comp_tick)
             
             # bind next selection
@@ -232,9 +231,8 @@ def start_game (game_type):
         
         # check if there this is one of the player's pieces   
         global state
-        global player
-        if(state['board'][i][j] == player+'m' or
-           state['board'][i][j] == player+'k'):
+        if(state['board'][i][j] == state['player']+'m' or
+           state['board'][i][j] == state['player']+'k'):
         
             # gather possible moves
             global pos_actions
@@ -248,9 +246,10 @@ def start_game (game_type):
                     C.create_oval(n_j*w/8+5,n_i*h/8+5,(n_j+1)*w/8-5,
                                   (n_i+1)*h/8-5,fill='yellow',tags='temp')                  
                 C.bind("<Button-1>", human_move)
+
             # goto the next player if there are no moves left
-            if (not init.pos_actions_left(state['board'],player)):
-                player = init.opponent(player)
+            if (not init.pos_actions_left(state['board'],state['player'])):
+                state['player'] = init.opponent(state['player'])
     
     
     #--------------------------------------------------------------------------
@@ -260,13 +259,12 @@ def start_game (game_type):
     def comp_move(event):
 
         global state
-        global player        
         
         # get the next move from the computer
-        next_move = comp.chooseMove(state['board'],player)
+        next_move = comp.chooseMove(state['board'],state['player'])
         
         if (next_move == 'nothing'):
-            player = init.opponent(player)
+            state['player'] = init.opponent(state['player'])
         else:
             #implement the next move
             state = init.next_state(state,next_move)
@@ -279,10 +277,8 @@ def start_game (game_type):
             if (game_state != 'continue'):
                 global playing
                 playing = False
-                end_game(game_type,game_state,player)
-            # game is not over
-            else:
-                player = init.opponent(player)
+                end_game(game_type,game_state,state['player'])
+
 
     #--------------------------------------------------------------------------
     """
@@ -296,8 +292,8 @@ def start_game (game_type):
         C.unbind("<Button-1>")
         global state
         state = init.new_state()
-        global player
-        player = init.random_player()
+        global playing
+        playing = True
         draw_squares()
         draw(state['board'])
         C.bind("<Button-1>", human_selection)
@@ -317,8 +313,6 @@ def start_game (game_type):
         C.unbind("<Button-1>")
         global state
         state = init.new_state()
-        global player
-        player = init.random_player()
         draw_squares()
         draw(state['board'])
         global playing
@@ -350,8 +344,6 @@ def start_game (game_type):
         C.unbind("<Button-1>")
         global state
         state = init.new_state()
-        global player
-        player = init.random_player()
         draw_squares()
         draw(state['board'])
         global playing
@@ -383,11 +375,11 @@ initialize Window and Main Menu
 """
 W = Tk()
 
-w = 600
-h = 600
-
 sw = W.winfo_screenwidth()
 sh = W.winfo_screenheight()
+
+w = sh - 0.15*sh
+h = w
 
 window_x = sw/2 - w/2
 window_y = sh/2 - h/2
