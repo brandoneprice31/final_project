@@ -132,7 +132,6 @@ def updateQvalue(firstState, nextState, reward, qTable):
     stateKey = T.makeKey(firstState)
     
     if (I.eval(nextState) == 'continue'):
-        nextKey = T.makeKey(nextState)
         player = nextState['player']
         opponent = I.opponent(player)
         opponent_best = extremeQvalue(nextState, opponent, qTable)
