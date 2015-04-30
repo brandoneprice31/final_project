@@ -7,7 +7,6 @@ by Vincent Chow, Stephen Albro, Peter Hickman, & Brandon Price
 """
 
 from random import randint
-from copy import deepcopy
 
 ########## TYPES ##############
 # type player = 'w' | 'r'
@@ -272,6 +271,21 @@ new_game returns an empty board and new stats for each player
 def new_game ():
     b = new()
     p = random_player()
-    return {'player':p,'board':b,'statr':{'player':'r','men_num':8,'king_num':0},
-            'statw':{'player':'w','men_num':8,'king_num':0}}
+    return {'player':p,'board':b,\
+    'statr':{'player':'r','men_num':12,'king_num':0},
+            'statw':{'player':'w','men_num':12,'king_num':0}}
     
+
+#-----------------------------------------------------------------------------     
+"""
+allPosMoves takes in a board and player and returns all of the possible moves
+of that player in a list
+"""
+def allPosMoves(board,player):
+    pos_act = []
+    for i in range(8):
+        for j in range(8):
+            if (board[i][j] == player+'m' or board[i][j] == player+'k'):
+                for act in pos_actions(board,(i,j)):
+                    pos_act.append(act)
+    return pos_act

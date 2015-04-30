@@ -291,6 +291,7 @@ window_x = sw/2 - w/2
 window_y = sh/2 - h/2
 
 W.title('Tic Tac Toe')
+
 W.geometry('%dx%d+%d+%d'%(w,h,window_x,window_y))
 W.resizable(width=FALSE, height=FALSE)
 
