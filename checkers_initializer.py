@@ -119,15 +119,20 @@ eval checks if either player has won or should continue
 def eval (state):
     stats1 = state['statr']
     stats2 = state['statw']
-    winning_player = win(stats1,stats2)
+    actions = allPosMoves(state['board'],state['player'])
+    
+    # if no available moves for current player, opponent wins
+    if (actions == []):
+        return (opponent(state['player']) + '_wins')
+    else:
+        return 'continue'
+    """
     # check all possible winning cases
-    if (winning_player == stats1['player']):
+    elif (winning_player == stats1['player']):
         return stats1['player'] + '_wins' # returns either 'w_wins' or 'r_wins'
     elif (winning_player == stats2['player']):
         return stats2['player'] + '_wins' # returns either 'w_wins' or 'r_wins'
-    else: 
-        return 'continue'
-
+    """
 
 #-----------------------------------------------------------------------------
 """
