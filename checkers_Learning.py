@@ -63,16 +63,17 @@ least-visited actions, it chooses among them randomly
 def leastVisited(state, qTable):
     actions = I.allPosMoves(state['board'], state['player'])
     
-    # create list of number of visits to each possible new state
-    visitsList = []    
+    # create list of action-visits tuples for each possible new state
+    actions_visits_list = []    
     for action in actions:
         new_state = I.next_state(state, action)
         new_key = T.makeKey(new_state)
         visits = qTable[new_key][1]
-        visitsList.append(action,visits)
+        actions_visits_list.append((action,visits))
+    visitsList = map(list, zip(*actions_visits_list))[0]
     minimum = min(visitsList)
-    least_visited_actions = \
-        [x for x in visitsList if (visitsList[x][1] == minimum)]
+    least_visited_actions = [x for x in actions_visits_list \
+        if (actions_visits_list[x][1] == minimum)]
     
     # random action
     size = len(least_visited_actions)
@@ -87,7 +88,6 @@ exploits the best move.
 """ 
 
 def chooseMove(state, qTable, games, maxGames):
-    stateKey = T.makeKey(state) 
     pos_act = I.allPosMoves(state['board'], state['player'])
     
     # if some moves are available
@@ -100,18 +100,18 @@ def chooseMove(state, qTable, games, maxGames):
                 print "explore"
                 
                 # random among least visited actions
-                return leastVisited(stateKey, qTable)[0]
+                return leastVisited(state, qTable)[0]
                      
             else:
                 print "exploit"
                 # exploit best q-value
-                return extremeQvalue(state, state[1], qTable)[0]
+                return extremeQvalue(state, state['player'], qTable)[0]
                 
         # exploitive phase
         else:
             # exploit best q-value
             print "exploit late"
-            return extremeQvalue(state, state[1], qTable)[0]        
+            return extremeQvalue(state, state['player'], qTable)[0]        
         
     # if no moves are available
     else:

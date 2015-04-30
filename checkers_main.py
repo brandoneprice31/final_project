@@ -40,7 +40,7 @@ Plays games to learn q values and returns qTable
 """
 
 def gameLearning(maxGames):
-    state = I.new_game()
+    state = I.new_state()
     games = 0
 
     # Open the checkers pickled dictionary
@@ -53,8 +53,6 @@ def gameLearning(maxGames):
             table = T.addKey(stateKey, table)
         action = L.chooseMove(state,table, games, maxGames)
         nextState = I.next_state(state,action)
-        ## Probaly ignore this: potentially Brandom might change this:
-        ## nextState['player'] = I.opponent([state['player'])
         nextKey = T.makeKey(nextState)
         reward = L.reinforcement(nextState)
         if nextKey not in table.keys():
