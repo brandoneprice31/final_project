@@ -107,7 +107,7 @@ def chooseMove(state, qTable, games, maxGames):
             else:
                 print "exploit"
                 # exploit best q-value
-                print qTable[stateKey][extremeQvalue(stateKey, state[1], qTable)[0]]
+                print extremeQvalue(stateKey, state[1], qTable)[1]
                 return extremeQvalue(stateKey, state[1], qTable)[0]
                 
         # exploitive phase
