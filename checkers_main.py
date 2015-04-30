@@ -32,7 +32,7 @@ import pickle
 
 global maxGames
 # MaximumGames = 10000000
-MaximumGames = 30000
+MaximumGames = 1000
 
 #-----------------------------------------------------------------------------
 """
@@ -49,8 +49,8 @@ def gameLearning(maxGames):
   
     while (games < maxGames):
         stateKey = T.makeKey(state)
-        print state['player']
-        print state['board']
+        # print state['player']
+        # print state['board']
         if stateKey not in table.keys():
             table = T.addKey(stateKey, table)
         action = L.chooseMove(state,table, games, maxGames)            
@@ -62,6 +62,7 @@ def gameLearning(maxGames):
         else:
             state = I.new_state()
             games += 1
+            print games
 
     # Save file to checkers pickle
     with open('checkers_dict.pickle', 'wb') as handle:
