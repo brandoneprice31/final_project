@@ -102,7 +102,7 @@ def chooseMove(state, qTable, games, maxGames):
     if pos_act != []:
         
         # exploring phase
-        if (games < (maxGames * 1.01)):
+        if (games < (maxGames * 0.95)):
             rand = R.random()
             if rand < chooseLeastVisited:
                 
@@ -116,7 +116,7 @@ def chooseMove(state, qTable, games, maxGames):
         # exploitive phase
         else:
             # exploit best q-value
-            return extremeQvalue(state, state['player'], qTable)[0]        
+            return extremeQvalue(state, state['player'], qTable)[0]
         
     # if no moves are available
     else:
