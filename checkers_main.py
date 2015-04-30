@@ -53,18 +53,16 @@ def gameLearning(maxGames):
             table = T.addKey(stateKey, table)
         action = L.chooseMove(state,table, games, maxGames)
         nextState = I.next_state(state,action)
+        ## Probaly ignore this: potentially Brandom might change this:
+        ## nextState['player'] = I.opponent([state['player'])
         nextKey = T.makeKey(nextState)
         reward = L.reinforcement(nextState)
         if nextKey not in table.keys():
-            table = T.addKey(nextState, nextKey, table)
+            table = T.addKey(nextKey, table)
         table = L.updateQvalue(state, action, nextState, reward, table)
         if (I.eval(nextState) == 'continue'):
             state = nextState
         else:
-            for i in range(8):  
-                print state['board'][i]
-            print "----------"
-            print "NEW GAME:"
             state = I.new_game()
             games += 1
     
