@@ -27,7 +27,7 @@ Created on Tue Apr 28 06:59:33 2015
 
 import checkers_initializer as I
 import checkers_tables as T
-import checkers_learning as L
+import checkers_Learning as L
 import pickle
 
 global maxGames
