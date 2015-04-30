@@ -9,6 +9,10 @@ import checkers_initializer as I
 import checkers_tables as T
 import random as R
 
+discountFactor = 0.8
+learningRate = 0.8
+chooseLeastVisited = 0.5
+
 #-----------------------------------------------------------------------------
 """
 evaluates a state, returning 1 if red won and (-1) if white won, 0 otherwise.
@@ -84,36 +88,40 @@ exploits the best move.
 """ 
 
 def chooseMove(state, qTable, games, maxGames):
-    pos_act = I.allPosMoves(board,player)
+    stateKey = T.makeKey(state) 
+    pos_act = I.allPosMoves(state['board'], state['player'])
+    
+    # if some moves are available
     if pos_act != []:
-        return pos_act[randint(0,len(pos_act)-1)]
+        
+        # exploring phase
+        if (games < (maxGames * 0.95)):
+            rand = R.random()
+            if rand < chooseLeastVisited:
+                print "explore"
+                
+                # random among least visited actions
+                print qTable[stateKey][leastVisited(stateKey, qTable)]
+                return leastVisited(stateKey, qTable)
+                     
+            else:
+                print "exploit"
+                # exploit best q-value
+                print qTable[stateKey][extremeQvalue(stateKey, state[1], qTable)[0]]
+                return extremeQvalue(stateKey, state[1], qTable)[0]
+                
+        # exploitive phase
+        else:
+            # exploit best q-value
+            print "exploit late"
+            return extremeQvalue(stateKey, state[1], qTable)[0]        
+            
+            return pos_act[R.randint(0,len(pos_act)-1)]
+        
+    # if no moves are available
     else:
         return 'nothing'
         
-def chooseMove(state, qTable, games, maxGames):
-    stateKey = T.makeKey(state)   
-    
-    # exploring phase
-    if (games < (maxGames * 0.95)):
-        rand = R.random()
-        if rand < chooseLeastVisited:
-            print "explore"
-            
-            # random among least visited actions
-            print qTable[stateKey][leastVisited(stateKey, qTable)]
-            return leastVisited(stateKey, qTable)
-                 
-        else:
-            print "exploit"
-            # exploit best q-value
-            print qTable[stateKey][extremeQvalue(stateKey, state[1], qTable)[0]]
-            return extremeQvalue(stateKey, state[1], qTable)[0]
-            
-    # exploitive phase
-    else:
-        # exploit best q-value
-        print "exploit late"
-        return extremeQvalue(stateKey, state[1], qTable)[0]
     
 #-----------------------------------------------------------------------------
 """
