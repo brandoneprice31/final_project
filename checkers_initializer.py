@@ -69,15 +69,15 @@ def next_state(state,action):
     if (abs(change_i) == 2 and abs(change_j) == 2):
         opponent_type = board[init_i+change_i/2][init_j+change_j/2]
         type_only = opponent_type[1]
-        opponent = opponent_type[0]
+        opponent_player = opponent_type[0]
         board[init_i+change_i/2][init_j+change_j/2] = '_'
         if (type_only == 'm'):
-            if (opponent == 'r'):
+            if (opponent_player == 'r'):
                 statr['men_num'] -= 1
             else:
                 statw['men_num'] -= 1
         else:
-            if (opponent == 'r'):
+            if (opponent_player == 'r'):
                 statr['king_num'] -= 1
             else:
                 statw['king_num'] -= 1
@@ -92,9 +92,10 @@ def next_state(state,action):
         board[final_i][final_j] = 'wk'
     else:
         board[final_i][final_j] = player_type
+    enemy = opponent(state['player'])
     # add the blank space
     board[init_i][init_j] = '_'
-    nextState = {'board':board, 'statr':statr, 'statw':statw}
+    nextState = {'player':enemy, 'board':board, 'statr':statr, 'statw':statw}
     return nextState
     
 
@@ -268,7 +269,7 @@ def random_player ():
 """
 new_game returns an empty board and new stats for each player
 """
-def new_game ():
+def new_state ():
     b = new()
     p = random_player()
     return {'player':p,'board':b,\

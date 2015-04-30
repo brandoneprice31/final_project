@@ -59,7 +59,7 @@ def gameLearning(maxGames):
         reward = L.reinforcement(nextState)
         if nextKey not in table.keys():
             table = T.addKey(nextKey, table)
-        table = L.updateQvalue(state, action, nextState, reward, table)
+        table = L.updateQvalue(state, nextState, reward, table)
         if (I.eval(nextState) == 'continue'):
             state = nextState
         else:
