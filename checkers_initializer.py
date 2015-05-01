@@ -1,7 +1,7 @@
 """
 CS 51
 
-Chekers Program
+Checkers Program
 
 by Vincent Chow, Stephen Albro, Peter Hickman, & Brandon Price
 """
@@ -29,8 +29,9 @@ from copy import deepcopy
 ########## FUNCTIONS ############
 #-----------------------------------------------------------------------------
 """
-new returns an empty board
+Returns an empty board
 """
+
 def new():
     return [['wm','_','wm','_','wm','_','wm','_'],\
             ['_','wm','_','wm','_','wm','_','wm'],\
@@ -41,20 +42,24 @@ def new():
             ['rm','_','rm','_','rm','_','rm','_'],\
             ['_','rm','_','rm','_','rm','_','rm']]
 
+
 #-----------------------------------------------------------------------------
 """
-opponent takes in the current player and returns the next player
+Takes in the current player and returns the next player
 """
+
 def opponent (player):
     if (player == 'r'):
         return 'w'
     else:
         return 'r'
 
+
 #-----------------------------------------------------------------------------
 """
-next_state takes in a state and an action and returns the next state
+Takes in a state and an action and returns the next state
 """
+
 def next_state(state,action):
     board = deepcopy(state['board'])
     statr = deepcopy(state['statr'])
@@ -66,7 +71,8 @@ def next_state(state,action):
     change_i = final_i - init_i
     change_j = final_j - init_j
     player_type = board[init_i][init_j]
-    # if its a jump, get rid of the character
+    
+    # if its a jump, remove the piece
     if (abs(change_i) == 2 and abs(change_j) == 2):
         opponent_type = board[init_i+change_i/2][init_j+change_j/2]
         type_only = opponent_type[1]
@@ -82,6 +88,7 @@ def next_state(state,action):
                 statr['king_num'] -= 1
             else:
                 statw['king_num'] -= 1
+                
     # somebody is being kinged
     if (final_i == 0 and player_type == 'rm'):
         statr['men_num'] -= 1
@@ -94,6 +101,7 @@ def next_state(state,action):
     else:
         board[final_i][final_j] = player_type
     enemy = opponent(state['player'])
+    
     # add the blank space
     board[init_i][init_j] = '_'
     nextState = {'player':enemy, 'board':board, 'statr':statr, 'statw':statw}
@@ -102,23 +110,9 @@ def next_state(state,action):
 
 #-----------------------------------------------------------------------------
 """
-checks if somebody has won and returns the winning playing
-"""
-def win (stats1,stats2):
-    if (stats1['men_num'] == 0 and stats1['king_num'] == 0):
-        return stats2['player']
-    elif (stats2['men_num'] == 0 and stats2['king_num'] == 0):
-        return stats1['player']
-    else:
-        return 'none'
-
-#-----------------------------------------------------------------------------
-"""
-eval checks if either player has won or should continue
+Checks if either player has won or should continue
 """
 def eval (state):
-    stats1 = state['statr']
-    stats2 = state['statw']
     actions = allPosMoves(state['board'],state['player'])
     
     # if no available moves for current player, opponent wins
@@ -126,13 +120,6 @@ def eval (state):
         return (opponent(state['player']) + '_wins')
     else:
         return 'continue'
-    """
-    # check all possible winning cases
-    elif (winning_player == stats1['player']):
-        return stats1['player'] + '_wins' # returns either 'w_wins' or 'r_wins'
-    elif (winning_player == stats2['player']):
-        return stats2['player'] + '_wins' # returns either 'w_wins' or 'r_wins'
-    """
 
 #-----------------------------------------------------------------------------
 """

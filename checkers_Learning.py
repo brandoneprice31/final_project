@@ -89,10 +89,8 @@ def leastVisited(state, qTable):
 
 #-----------------------------------------------------------------------------
 """
-Chooses a move from a given state. First the first 95% of the games, it 
-exploits the best move available half the time and chooses one of the least-
-visited moves the other half of the time. In the last 5% of games, it simply 
-exploits the best move.
+Chooses a move from a given state. Half the time it exploits the best available
+more and the other half of the time it chooses one of the least-visited moves. 
 """ 
 
 def chooseMove(state, qTable, games, maxGames):
@@ -102,7 +100,7 @@ def chooseMove(state, qTable, games, maxGames):
     if pos_act != []:
         
         # exploring phase
-        if (games < (maxGames * 1.01)):
+        if (games < maxGames):
             rand = R.random()
             if rand < chooseLeastVisited:
                 

@@ -165,7 +165,7 @@ def start_game (game_type):
         stateKey = tables.makeKey((board,player))
         if stateKey not in table:
             tables.addKey(stateKey,table)
-        next_move = comp.chooseMove((board,player), table, 99, 100)
+        next_move = comp.chooseMove((board,player), table, 1, 0)
         
         #implement the next move
         board = init.next_state((board,player),next_move)[0]

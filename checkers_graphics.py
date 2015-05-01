@@ -261,7 +261,7 @@ def start_game (game_type):
         global state
         
         # get the next move from the computer
-        next_move = comp.chooseMove(state['board'],state['player'])
+        next_move = comp.chooseMove(state['board'],state['player'], 1, 0)
         
         if (next_move == 'nothing'):
             state['player'] = init.opponent(state['player'])
