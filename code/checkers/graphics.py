@@ -1,25 +1,19 @@
-"""
-
+'''
 CS 51
-
-Tic Tac Toe Program
-
+Checkers Program
 by Vincent Chow, Stephen Albro, Peter Hickman, & Brandon Price
-"""
-
-
-#-----------------------------------------------------------------------------
-"""
-import modules
-"""
+'''
+'''
+Graphics.py contains everything GUI-related. It primarily draws from
+initializer.py but occasionally uses learning.py. 
+'''
 
 from Tkinter import *
-import checkers_initializer as init
+import initializer as init
 from random import randint
-import checkers_Learning as comp
+import learning as comp
 import pickle
-import checkers_tables as tables
-
+import tables as tables
 
 
 #-----------------------------------------------------------------------------
@@ -263,14 +257,14 @@ def start_game (game_type):
 
         global state
         
-        with open('checkers_dict.pickle','rb') as handle:
+        with open('dict.pickle','rb') as handle:
             table = pickle.load(handle)
         
         stateKey = tables.makeKey(state)
 
         if stateKey not in table:
             tables.addKey(stateKey,table)
-        next_move = comp.chooseMove(state,table,99,100)
+        next_move = comp.chooseMove(state,table,1,0)
         
         if (next_move == 'nothing'):
             state['player'] = init.opponent(state['player'])
@@ -322,7 +316,7 @@ def start_game (game_type):
         C.unbind("<Button-1>")
         global state
         state = init.new_state()
-        state['player'] = 'r'
+        #state['player'] = 'r'
         draw_squares()
         draw(state['board'])
         global playing
@@ -383,6 +377,7 @@ def start_game (game_type):
 """
 initialize Window and Main Menu
 """
+
 W = Tk()
 
 sw = W.winfo_screenwidth()

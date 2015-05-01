@@ -1,0 +1,2 @@
+title: Q-Learning for Checkers and Tic-tac-toe
+seas-usernames: chow, salbro, bprice, phickman

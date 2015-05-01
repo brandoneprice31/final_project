@@ -1,36 +1,22 @@
-"""
+'''
 CS 51
-
-Chekers Program
-
+Tic Tac Toe Program
 by Vincent Chow, Stephen Albro, Peter Hickman, & Brandon Price
-"""
-
+'''
+'''
+Initializer.py contains our most elementary functionality related to te tic-tac-toe board.
+It is responsible for things like making a new boards and games, evaluating wins, ties, and
+valid moves, and getting the opponent and the next state given an action.
+The file does not require excessive commenting.
+'''
 from random import randint
 from copy import deepcopy
 
-########## TYPES ##############
-# type player = 'w' | 'r'
-
-# men = 'wm' | 'rm'
-
-# king = 'wk' | 'rk'
-
-# player_type = men | king
-
-# type stats = dict(player:player, men_num:int, king_num:int)
-
-# type action = dict(init_pos:(int,int), final_pos:(int,int))
-
-# type board = 8 x 8 array of arrays
-
-# type state = dict(board:board, statr:stats, statw:stats)
-
-########## FUNCTIONS ############
 #-----------------------------------------------------------------------------
 """
-new returns an empty board
+Returns an empty board
 """
+
 def new():
     return [['wm','_','wm','_','wm','_','wm','_'],\
             ['_','wm','_','wm','_','wm','_','wm'],\
@@ -41,20 +27,24 @@ def new():
             ['rm','_','rm','_','rm','_','rm','_'],\
             ['_','rm','_','rm','_','rm','_','rm']]
 
+
 #-----------------------------------------------------------------------------
 """
-opponent takes in the current player and returns the next player
+Takes in the current player and returns the next player
 """
+
 def opponent (player):
     if (player == 'r'):
         return 'w'
     else:
         return 'r'
 
+
 #-----------------------------------------------------------------------------
 """
-next_state takes in a state and an action and returns the next state
+Takes in a state and an action and returns the next state
 """
+
 def next_state(state,action):
     board = deepcopy(state['board'])
     statr = deepcopy(state['statr'])
@@ -66,7 +56,8 @@ def next_state(state,action):
     change_i = final_i - init_i
     change_j = final_j - init_j
     player_type = board[init_i][init_j]
-    # if its a jump, get rid of the character
+    
+    # if its a jump, remove the piece
     if (abs(change_i) == 2 and abs(change_j) == 2):
         opponent_type = board[init_i+change_i/2][init_j+change_j/2]
         type_only = opponent_type[1]
@@ -82,6 +73,7 @@ def next_state(state,action):
                 statr['king_num'] -= 1
             else:
                 statw['king_num'] -= 1
+                
     # somebody is being kinged
     if (final_i == 0 and player_type == 'rm'):
         statr['men_num'] -= 1
@@ -94,31 +86,17 @@ def next_state(state,action):
     else:
         board[final_i][final_j] = player_type
     enemy = opponent(state['player'])
+    
     # add the blank space
     board[init_i][init_j] = '_'
     nextState = {'player':enemy, 'board':board, 'statr':statr, 'statw':statw}
     return nextState
     
-
 #-----------------------------------------------------------------------------
 """
-checks if somebody has won and returns the winning playing
-"""
-def win (stats1,stats2):
-    if (stats1['men_num'] == 0 and stats1['king_num'] == 0):
-        return stats2['player']
-    elif (stats2['men_num'] == 0 and stats2['king_num'] == 0):
-        return stats1['player']
-    else:
-        return 'none'
-
-#-----------------------------------------------------------------------------
-"""
-eval checks if either player has won or should continue
+Checks if either player has won; if not, continue
 """
 def eval (state):
-    stats1 = state['statr']
-    stats2 = state['statw']
     actions = allPosMoves(state['board'],state['player'])
     
     # if no available moves for current player, opponent wins
@@ -126,13 +104,7 @@ def eval (state):
         return (opponent(state['player']) + '_wins')
     else:
         return 'continue'
-    """
-    # check all possible winning cases
-    elif (winning_player == stats1['player']):
-        return stats1['player'] + '_wins' # returns either 'w_wins' or 'r_wins'
-    elif (winning_player == stats2['player']):
-        return stats2['player'] + '_wins' # returns either 'w_wins' or 'r_wins'
-    """
+
 
 #-----------------------------------------------------------------------------
 """
@@ -178,13 +150,6 @@ def valid (board,action):
     # return all three variables
     return (space_is_open and correct_pos and correct_direction)
     
-    # Cases:
-        # open space - check
-        # correct pos for jump - check
-        # correct pos for non-jump  - check
-        # up for red-men - check
-        # down for white-men - check
-
 
 #-----------------------------------------------------------------------------
 """
@@ -247,11 +212,9 @@ def pos_actions (board, current_pos):
     return possible_actions
     
 
-
 #-----------------------------------------------------------------------------
 """
-pos_actions_left takes in a board and player and returns
-true if there are actions left for that player else it returns false false
+pos_actions_left return true if there are actions left for that player
 """
 def pos_actions_left (board,player):
     pos_act = []
@@ -261,7 +224,6 @@ def pos_actions_left (board,player):
                 for act in pos_actions(board,(i,j)):
                     pos_act.append(act)
     return (pos_act != [])
-
 
 #-----------------------------------------------------------------------------
 """
@@ -275,15 +237,14 @@ def random_player ():
    
 #-----------------------------------------------------------------------------     
 """
-new_game returns an empty board and new stats for each player
+new_state returns an empty board and new stats for each player
 """
 def new_state ():
     b = new()
     p = random_player()
     return {'player':p,'board':b,\
-    'statr':{'player':'r','men_num':12,'king_num':0},
-            'statw':{'player':'w','men_num':12,'king_num':0}}
-
+    'statr':{'player':'r','men_num':2,'king_num':5},
+            'statw':{'player':'w','men_num':5,'king_num':3}}
 
 #-----------------------------------------------------------------------------     
 """
