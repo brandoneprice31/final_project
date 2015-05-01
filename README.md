@@ -8,30 +8,59 @@ Brandon Price
 Peter Hickman
 Vincent Chow
 
-# Tic-Tac-Toe Instructions:
+################################################################################
 
-1. Run Tic-Tac-Toe by typing in the command ‚Äúpython graphics.py‚Äù in the terminal.
+Tic-Tac-Toe Instructions:
 
-2.Choose a game option: Human vs. Human, Human vs. Comp, or Comp vs. Comp.
+1) Enter the "tic-tac-toe" directory within code/
 
-3.Click a square to make a move.  Three in a row wins the game.
+2) Play tic-tac-toe:
 
-4.After the game is over, click the screen to play again.
+     a) Enter ìpython graphics.pyî in the terminal.
 
+     b) Choose a game option: Human vs. Human, Human vs. Comp, or Comp vs. Comp.
 
+     c) Click a square to make a move.  Three in a row wins the game.
 
-# Checkers Instructions:
+     d) After the game is over, click the screen to play again.
 
-1. Run Checkers by typing in the command ‚Äúpython checkers_graphics.py‚Äù in the terminal.
+3) Re-learn tic-tac-toe:
+ 
+     a) Enter ìpython pickle_initializer.pyî in the terminal. This will clear
+        the qTable.
+     
+     b) Enter "python main.py" in the terminal. It will run 30,000 games of 
+        computer v. computer tic-tac-toe and update the qTable. This should take
+        under five minutes.
 
-2. Choose a game option: Human vs. Human, Human vs. Comp, or Comp vs. Comp.
+################################################################################
 
-3. If you are playing the computer, the program randomly selects who goes first so you might have to wait a second for the computer to make a move, otherwise click a piece that you want to move and the program will highlight all possible moves for that piece. You may need to try both white and red pieces to see which one you‚Äôve been assigned.
+Checkers Instructions:
 
-4. Click one of the highlighted moves to move that piece.  If a piece gets to the back row it will become a king and be able to move both ways.  Jump over all the opponents pieces or trap the opponent so that he or she have no moves left to win the game.
+1) Enter the "checkers" directory within code/
 
-5. Note that double jumps are not allowed in this version of the game.
+2) Play checkers:
 
-6. After the game is over, click the screen to play again.
+     a) Enter ìpython graphics.pyî in the terminal.
+
+     b) Choose a game option: Human vs. Human, Human vs. Comp, or Comp vs. Comp.
+
+     c) Click a piece to make a move. If you go first, you may need to try both
+        white and red pieces to determine which side you've been assigned. After
+        you click a piece, your movement options will be highlighted. Click one
+        of the highlighted squares to make a move.
+
+     d) Try to capture all your opponent's pieces. Note that double jumps are
+        not allowed in this version of checkers.
+
+     e) After the game is over, click the screen to play again.
+
+3) Re-learn checkers (slow, not reccomended):
+ 
+     a) Enter ìpython pickle_initializer.pyî in the terminal.
+     
+     b) Enter "python main.py" in the terminal. It will run 10,000 games of 
+        computer v. computer checkers and update the qTable. This could take
+        over 30 minutes.
 
 
