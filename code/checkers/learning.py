@@ -50,6 +50,9 @@ def extremeQvalue(state, player, qTable):
     if player == 'r': 
         # Dummy starter maximum value. Every qValue by definition is greater than -2.
         maximum = -2
+        # list of actions with best q-value
+        best_actions = []
+        # add best actions to list
         for action in actions:
             new_state = I.next_state(state, action)
             new_key = T.makeKey(new_state)
@@ -57,8 +60,14 @@ def extremeQvalue(state, player, qTable):
                 qTable = T.addKey(new_key, qTable)
             if qTable[new_key][0] > maximum:
                 maximum = qTable[new_key][0]
-                best_action = action
-        return (best_action, maximum)  
+                best_actions = [action]
+            elif qTable[new_key][0] == maximum:
+                best_actions.append(action)
+                
+        #select randomly among best actions      
+        size = len(best_actions)
+        return (best_actions[R.randint(0,(size-1))], maximum)
+
     else:
         # Dummy starter minimum value. Every qValue by definition is smaller than +2.
         minimum = 2
