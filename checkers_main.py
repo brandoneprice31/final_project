@@ -49,6 +49,7 @@ def gameLearning(maxGames):
   
     while (games < maxGames):
         stateKey = T.makeKey(state)
+
         # print state['player']
         # print state['board']
         if stateKey not in table.keys():
@@ -69,5 +70,4 @@ def gameLearning(maxGames):
         pickle.dump(table, handle)
         handle.close()
    
-   
-gameLearning(100)
+gameLearning(MaximumGames)
