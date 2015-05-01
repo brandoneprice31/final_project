@@ -58,5 +58,4 @@ def gameLearning(maxGames):
         handle.close()
 
 
-gameLearning(1000)
-
+gameLearning(2000)

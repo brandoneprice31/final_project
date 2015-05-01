@@ -30,6 +30,10 @@ def gameLearning(maxGames):
         table = pickle.load(handle)
   
     while (games < maxGames):
+        print state[0][0]
+        print state[0][1]
+        print state[0][2]
+        print "-----------"
         stateKey = T.makeKey(state)
         if stateKey not in table.keys():
             table = T.addKey(stateKey,table)
@@ -52,11 +56,16 @@ def gameLearning(maxGames):
         else:
             state = I.new_game()
             games += 1
-            print games
+            print state[0][0]
+            print state[0][1]
+            print state[0][2]
+            print "-----------"
     
     # After maxGames have been played, save the table into the pickle file.
     with open('dict.pickle', 'wb') as handle:
         pickle.dump(table, handle)
         handle.close()
+    
+    print table        
         
-gameLearning(MaximumGames)
+gameLearning(3000)
