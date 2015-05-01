@@ -1,32 +1,17 @@
-"""
+'''
 CS 51
-
-Checkers Program
-
+Tic Tac Toe Program
 by Vincent Chow, Stephen Albro, Peter Hickman, & Brandon Price
-"""
-
+'''
+'''
+Initializer.py contains our most elementary functionality related to te tic-tac-toe board.
+It is responsible for things like making a new boards and games, evaluating wins, ties, and
+valid moves, and getting the opponent and the next state given an action.
+The file does not require excessive commenting.
+'''
 from random import randint
 from copy import deepcopy
 
-########## TYPES ##############
-# type player = 'w' | 'r'
-
-# men = 'wm' | 'rm'
-
-# king = 'wk' | 'rk'
-
-# player_type = men | king
-
-# type stats = dict(player:player, men_num:int, king_num:int)
-
-# type action = dict(init_pos:(int,int), final_pos:(int,int))
-
-# type board = 8 x 8 array of arrays
-
-# type state = dict(board:board, statr:stats, statw:stats)
-
-########## FUNCTIONS ############
 #-----------------------------------------------------------------------------
 """
 Returns an empty board
@@ -107,10 +92,9 @@ def next_state(state,action):
     nextState = {'player':enemy, 'board':board, 'statr':statr, 'statw':statw}
     return nextState
     
-
 #-----------------------------------------------------------------------------
 """
-Checks if either player has won or should continue
+Checks if either player has won; if not, continue
 """
 def eval (state):
     actions = allPosMoves(state['board'],state['player'])
@@ -120,6 +104,7 @@ def eval (state):
         return (opponent(state['player']) + '_wins')
     else:
         return 'continue'
+
 
 #-----------------------------------------------------------------------------
 """
@@ -165,13 +150,6 @@ def valid (board,action):
     # return all three variables
     return (space_is_open and correct_pos and correct_direction)
     
-    # Cases:
-        # open space - check
-        # correct pos for jump - check
-        # correct pos for non-jump  - check
-        # up for red-men - check
-        # down for white-men - check
-
 
 #-----------------------------------------------------------------------------
 """
@@ -234,11 +212,9 @@ def pos_actions (board, current_pos):
     return possible_actions
     
 
-
 #-----------------------------------------------------------------------------
 """
-pos_actions_left takes in a board and player and returns
-true if there are actions left for that player else it returns false false
+pos_actions_left return true if there are actions left for that player
 """
 def pos_actions_left (board,player):
     pos_act = []
@@ -248,7 +224,6 @@ def pos_actions_left (board,player):
                 for act in pos_actions(board,(i,j)):
                     pos_act.append(act)
     return (pos_act != [])
-
 
 #-----------------------------------------------------------------------------
 """
@@ -262,15 +237,14 @@ def random_player ():
    
 #-----------------------------------------------------------------------------     
 """
-new_game returns an empty board and new stats for each player
+new_state returns an empty board and new stats for each player
 """
 def new_state ():
     b = new()
     p = random_player()
     return {'player':p,'board':b,\
-    'statr':{'player':'r','men_num':12,'king_num':0},
-            'statw':{'player':'w','men_num':12,'king_num':0}}
-
+    'statr':{'player':'r','men_num':2,'king_num':5},
+            'statw':{'player':'w','men_num':5,'king_num':3}}
 
 #-----------------------------------------------------------------------------     
 """

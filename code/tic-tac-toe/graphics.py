@@ -1,16 +1,12 @@
-"""
+'''
 CS 51
-
 Tic Tac Toe Program
-
 by Vincent Chow, Stephen Albro, Peter Hickman, & Brandon Price
-"""
-
-
-#-----------------------------------------------------------------------------
-"""
-import modules
-"""
+'''
+'''
+Graphics.py contains everything GUI-related. It primarily draws from
+initializer.py but occasionally uses learning.py. 
+'''
 
 from Tkinter import *
 import initializer as init

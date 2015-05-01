@@ -1,11 +1,14 @@
-"""
+'''
 CS 51
-
 Tic Tac Toe Program
-
 by Vincent Chow, Stephen Albro, Peter Hickman, & Brandon Price
-"""
-
+'''
+'''
+Initializer.py contains our most elementary functionality related to te tic-tac-toe board.
+It is responsible for things like making a new boards and games, evaluating wins, ties, and
+valid moves, and getting the opponent and the next state given an action.
+The file does not require excessive commenting.
+'''
 from random import randint
 from copy import deepcopy
 

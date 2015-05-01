@@ -1,22 +1,19 @@
-"""
-
+'''
 CS 51
-
-Tic Tac Toe Program
-
+Checkers Program
 by Vincent Chow, Stephen Albro, Peter Hickman, & Brandon Price
-"""
-
-
-#-----------------------------------------------------------------------------
-"""
-import modules
-"""
+'''
+'''
+Graphics.py contains everything GUI-related. It primarily draws from
+initializer.py but occasionally uses learning.py. 
+'''
 
 from Tkinter import *
-import checkers_initializer as init
+import initializer as init
 from random import randint
-import checkers_Learning as comp
+import learning as comp
+import pickle
+import tables as tables
 
 
 #-----------------------------------------------------------------------------
@@ -98,7 +95,7 @@ def start_game (game_type):
     define end game function which draws the end screen
     """
     
-    def end_game (game_type, end_type, player):
+    def end_game (game_type, end_type):
         # draw white rectangle
         C.create_rectangle(w/8,h/8,w-w/8,h-h/8, fill="white")
         if (end_type == 'r_wins'):
@@ -176,7 +173,7 @@ def start_game (game_type):
             if (game_state != 'continue'):
                 global playing
                 playing = False
-                end_game(game_type,game_state,state['player'])
+                end_game(game_type,game_state)
             # game is not over
             else:
                 C.unbind('<Button-1>')
@@ -247,9 +244,9 @@ def start_game (game_type):
                                   (n_i+1)*h/8-5,fill='yellow',tags='temp')                  
                 C.bind("<Button-1>", human_move)
 
-            # goto the next player if there are no moves left
+            # win if there are no moves left
             if (not init.pos_actions_left(state['board'],state['player'])):
-                state['player'] = init.opponent(state['player'])
+                end_game(game_type, init.opponent(state['player'])+'_wins')
     
     
     #--------------------------------------------------------------------------
@@ -260,8 +257,14 @@ def start_game (game_type):
 
         global state
         
-        # get the next move from the computer
-        next_move = comp.chooseMove(state['board'],state['player'], 1, 0)
+        with open('dict.pickle','rb') as handle:
+            table = pickle.load(handle)
+        
+        stateKey = tables.makeKey(state)
+
+        if stateKey not in table:
+            tables.addKey(stateKey,table)
+        next_move = comp.chooseMove(state,table,1,0)
         
         if (next_move == 'nothing'):
             state['player'] = init.opponent(state['player'])
@@ -277,7 +280,7 @@ def start_game (game_type):
             if (game_state != 'continue'):
                 global playing
                 playing = False
-                end_game(game_type,game_state,state['player'])
+                end_game(game_type,game_state)
 
 
     #--------------------------------------------------------------------------
@@ -313,6 +316,7 @@ def start_game (game_type):
         C.unbind("<Button-1>")
         global state
         state = init.new_state()
+        #state['player'] = 'r'
         draw_squares()
         draw(state['board'])
         global playing
@@ -373,6 +377,7 @@ def start_game (game_type):
 """
 initialize Window and Main Menu
 """
+
 W = Tk()
 
 sw = W.winfo_screenwidth()
