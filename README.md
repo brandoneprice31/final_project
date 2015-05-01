@@ -55,7 +55,7 @@ Checkers Instructions:
 
      e) After the game is over, click the screen to play again.
 
-3) Re-learn checkers (slow, not reccomended):
+3) Re-learn checkers (slow, not recommended):
  
      a) Enter “python pickle_initializer.py” in the terminal.
      
