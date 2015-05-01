@@ -270,7 +270,7 @@ def start_game (game_type):
 
         if stateKey not in table:
             tables.addKey(stateKey,table)
-        next_move = comp.chooseMove(state,table,99,100)
+        next_move = comp.chooseMove(state,table,1,0)
         
         if (next_move == 'nothing'):
             state['player'] = init.opponent(state['player'])

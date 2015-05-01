@@ -46,7 +46,7 @@ def gameLearning(maxGames):
     # Open the checkers pickled dictionary
     with open('checkers_dict.pickle', 'rb') as handle:
         table = pickle.load(handle)
-  
+        print(table)
     while (games < maxGames):
         stateKey = T.makeKey(state)
         if stateKey not in table.keys():
@@ -60,7 +60,8 @@ def gameLearning(maxGames):
         else:
             state = I.new_state()
             games += 1
-            print games
+            print (games)
+
 
     # Save file to checkers pickle
     with open('checkers_dict.pickle', 'wb') as handle:

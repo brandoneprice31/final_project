@@ -13,4 +13,3 @@ with open('checkers_dict.pickle', 'wb') as handle:
     pickle.dump(d, handle)
 
 
-
