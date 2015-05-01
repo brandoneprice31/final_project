@@ -322,7 +322,7 @@ def start_game (game_type):
         C.unbind("<Button-1>")
         global state
         state = init.new_state()
-        state['player'] = 'r'
+        #state['player'] = 'r'
         draw_squares()
         draw(state['board'])
         global playing

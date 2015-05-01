@@ -1,30 +1,19 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Sat Apr 25 14:19:51 2015
+'''
+CS 51
+Tic Tac Toe Program
+by Vincent Chow, Stephen Albro, Peter Hickman, & Brandon Price
+'''
+'''
+pickle_initializer.py exists for the sole purpose of replacing whatever is in the
+stored pickle file with an empty dictionary. This file is run when we wish to initialize or
+clear our current pickle file to test our learning algorithm. 
+'''
 
-@author: Stephen
-"""
 import pickle
 
 d = {}
-
-# This is how you "Dump" TO the pickle
+# Dump the empty dictionary into the pickle file. 
 with open('dict.pickle', 'wb') as handle:
     pickle.dump(d, handle)
 
-  
-## This is how you "load" FROM the pickle
-#with open('dict.pickle', 'rb') as handle:
-#    b = pickle.load(handle)
-#
-#print b == d
-#
-#r = {'h':2}
-#with open('dict.pickle','wb') as handle:
-#    pickle.dump(r, handle)
-#
-#with open ('dict.pickle','rb') as handle:
-#    y = pickle.load(handle)
-#
-#print y
-
+# That's all folks.

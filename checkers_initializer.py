@@ -41,6 +41,7 @@ def new():
             ['rm','_','rm','_','rm','_','rm','_'],\
             ['_','rm','_','rm','_','rm','_','rm']]
 
+
 #-----------------------------------------------------------------------------
 """
 opponent takes in the current player and returns the next player
@@ -281,8 +282,8 @@ def new_state ():
     b = new()
     p = random_player()
     return {'player':p,'board':b,\
-    'statr':{'player':'r','men_num':12,'king_num':0},
-            'statw':{'player':'w','men_num':12,'king_num':0}}
+    'statr':{'player':'r','men_num':2,'king_num':5},
+            'statw':{'player':'w','men_num':5,'king_num':3}}
 
 
 #-----------------------------------------------------------------------------     
